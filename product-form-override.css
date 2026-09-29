@@ -70,3 +70,27 @@ body.modalOpen{overflow:auto}.productFormPanel{display:none;position:relative;in
     padding-bottom:24px!important;
   }
 }
+
+/* BRASABOX — travar a página durante o cadastro e manter o botão acessível */
+@media (max-width:600px){
+  html:has(#page-produtos #productFormPanel.show),body:has(#page-produtos #productFormPanel.show),
+  html:has(#page-produtos #productFormPanel.open),body:has(#page-produtos #productFormPanel.open){
+    overflow:hidden!important;overscroll-behavior:none!important;position:fixed!important;
+    width:100%!important;height:100%!important;max-height:100%!important;
+  }
+  #page-produtos #productFormPanel.show,#page-produtos #productFormPanel.open{
+    overscroll-behavior:none!important;touch-action:pan-y!important;
+  }
+  #page-produtos #productFormPanel.show .productFormModal,#page-produtos #productFormPanel.open .productFormModal{
+    display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;
+    overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;
+  }
+  #page-produtos #productFormPanel.show .productForm,#page-produtos #productFormPanel.open .productForm{
+    min-height:0!important;overflow:visible!important;padding-bottom:88px!important;
+  }
+  #page-produtos #productFormPanel.show .productForm .formSave,#page-produtos #productFormPanel.open .productForm .formSave{
+    position:sticky!important;bottom:10px!important;z-index:20!important;width:100%!important;
+    min-height:48px!important;margin-top:10px!important;
+    box-shadow:0 -12px 25px rgba(15,17,21,.92),0 10px 25px rgba(229,9,20,.18)!important;
+  }
+}
