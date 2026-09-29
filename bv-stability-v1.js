@@ -744,7 +744,7 @@ window.toggleStoreStatus=async function(){
   const previous=window.BV_STORE_OPEN!==false;
   const next=!previous;
   try{
-    const r=await sb.from('settings').update({store_open:next}).eq('id',1).select('store_open').maybeSingle();
+    const r=await sb.from('settings').update({store_open:next}).eq('store_id',window.BV_STORE_ID).select('store_open').maybeSingle();
     if(r.error)throw r.error;
     if(!r.data)throw new Error('Configuração da loja não encontrada.');
     window.BV_STORE_OPEN=r.data.store_open!==false;
@@ -759,7 +759,7 @@ window.toggleStoreStatus=async function(){
     if(btn)btn.disabled=false;
   }
 };
-window.saveCfg=async()=>{if(!sb)return;const f=Number(String($('feeCfg')?.value||0).replace(',','.')),w=$('waCfg')?.value.trim()||'';if(!Number.isFinite(f)||f<0)return toast('Taxa padrão inválida.');const r=await sb.from('settings').upsert({id:1,fee:f,whatsapp:w},{onConflict:'id'});if(r.error)return toast('Erro ao salvar configurações: '+r.error.message);window.BV_DEFAULT_FEE=f;toast('Configurações salvas.')};
+window.saveCfg=async()=>{if(!sb)return;const f=Number(String($('feeCfg')?.value||0).replace(',','.')),w=$('waCfg')?.value.trim()||'';if(!Number.isFinite(f)||f<0)return toast('Taxa padrão inválida.');const r=await sb.from('settings').upsert({store_id:window.BV_STORE_ID,fee:f,whatsapp:w},{onConflict:'store_id'});if(r.error)return toast('Erro ao salvar configurações: '+r.error.message);window.BV_DEFAULT_FEE=f;toast('Configurações salvas.')};
 
   window.promotions=[];window.promotionItems={};
   window.BV_REFRESH_PROMOTIONS=async()=>{if(!sb)return;const r=await sb.from('promotions').select('*').order('created_at',{ascending:false});if(r.error)return toast('Erro ao carregar promoções: '+r.error.message);window.promotions=r.data||[];const ids=window.promotions.map(x=>x.id);window.promotionItems={};if(ids.length){const z=await sb.from('promotion_items').select('promotion_id,product_id,quantity').in('promotion_id',ids);if(!z.error)(z.data||[]).forEach(i=>{(window.promotionItems[i.promotion_id]??=[]).push(i)})}
