@@ -35,7 +35,24 @@ const oldRender=window.renderProductsAdmin;
 window.renderProductsAdmin=async function(){const r=typeof oldRender==='function'?await oldRender.apply(this,arguments):undefined;await renderCardFlavors();return r};
 window.BV_REFRESH_CUSTOM_FLAVORS=renderCardFlavors;
 
+
+function installProductImagePicker(){
+ const form=document.querySelector('#page-produtos form.productForm');
+ if(!form||form.dataset.imagePicker==='1')return;
+ form.dataset.imagePicker='1';
+ const label=document.createElement('label');
+ label.className='bvProductImageField';
+ label.innerHTML='<span>Imagem do produto</span><div class="bvImagePickerRow"><button type="button" class="bvImportImageBtn" id="bvImportImageBtn">🖼️ Importar imagem</button><span class="bvImageName" id="bvImageName">Nenhuma imagem selecionada</span></div><input id="bvProductImageInput" type="file" accept="image/*" hidden><img id="bvProductImagePreview" class="bvProductImagePreview" alt="Pré-visualização" hidden>';
+ const desc=document.getElementById('productDesc');
+ if(desc&&desc.closest('label'))desc.closest('label').insertAdjacentElement('afterend',label);
+ const input=label.querySelector('#bvProductImageInput'),btn=label.querySelector('#bvImportImageBtn'),name=label.querySelector('#bvImageName'),preview=label.querySelector('#bvProductImagePreview');
+ btn.onclick=()=>input.click();
+ input.onchange=()=>{const file=input.files&&input.files[0];if(!file)return;name.textContent=file.name;preview.src=URL.createObjectURL(file);preview.hidden=false;};
+ window.BV_GET_PRODUCT_IMAGE=()=>input.files&&input.files[0]||null;
+}
+
 function installForm(){
+ installProductImagePicker();
  const form=document.querySelector('#page-produtos form.productForm'),cat=$('productCategory');
  if(!form||!cat||form.dataset.customFlavors==='1')return;
  form.dataset.customFlavors='1';
@@ -62,10 +79,16 @@ function wrapAddProduct(){
      for(const f of flavors){const k=norm(f.flavor);if(!k)return window.toast?.('Informe todos os sabores.');if(seen.has(k))return window.toast?.('Não repita o mesmo sabor.');if(!Number.isInteger(f.stock)||f.stock<0)return window.toast?.('Quantidade inválida para '+f.flavor+'.');seen.add(k)}
    }
    const n=$('productName')?.value.trim()||'',price=Number(String($('productPrice')?.value||'').replace(',','.')),d=$('productDesc')?.value.trim()||'';
+   const imageFile=window.BV_GET_PRODUCT_IMAGE?.();
+   let imageUrl='';
+   if(imageFile){
+     if(!imageFile.type.startsWith('image/'))return window.toast?.('Selecione uma imagem válida.');
+     if(imageFile.size>8*1024*1024)return window.toast?.('A imagem deve ter no máximo 8 MB.');
+     imageUrl=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const max=900,sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.82));};im.onerror=reject;im.src=rd.result};rd.onerror=reject;rd.readAsDataURL(imageFile)});
    if(!n||!Number.isFinite(price)||price<0)return window.toast?.('Preencha nome e valor corretamente.');
    const btn=form.querySelector('.formSave');if(btn){btn.disabled=true;btn.textContent='Cadastrando...'}
    try{
-     const r=await b.from('products').insert({name:n,price,category:cat,description:d,active:true,stock:1}).select('id').single();if(r.error)throw r.error;
+     const r=await b.from('products').insert({name:n,price,category:cat,description:d,image_url:imageUrl,active:true,stock:1}).select('id').single();if(r.error)throw r.error;
      for(const f of flavors){const z=await b.rpc('set_product_flavor_stock',{p_product_id:r.data.id,p_flavor:f.flavor,p_stock:Math.floor(f.stock)});if(z.error)throw z.error}
      form.reset();if($('productCategory'))$('productCategory').value='Lanches';window.closeProductForm?.();await window.BV_REFRESH_PRODUCTS?.();await renderCardFlavors();window.toast?.('Sucesso! Seu produto foi cadastrado.');
    }catch(err){console.error('[BV PRODUCT]',err);window.toast?.('Erro ao cadastrar produto: '+(err?.message||'tente novamente.'))}
@@ -112,3 +135,4 @@ async function install(){
 const st=document.createElement('style');st.id='bvCustomFlavorStyle';st.textContent='.bvCustomFlavorStock,.bvNewFlavorPanel{margin:12px 0 4px;padding:12px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}.bvFlavorAdminHead,.bvNewFlavorHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.bvFlavorAdminHead b,.bvNewFlavorHead b{display:block;font-size:10px;letter-spacing:.1em}.bvFlavorAdminHead small,.bvNewFlavorHead small{display:block;margin-top:3px;font-size:10px;color:#8f96a0}.bvAddFlavorBtn,#bvNewFlavorBtn{border:1px solid rgba(229,9,20,.35);background:rgba(229,9,20,.12);color:#fff;border-radius:9px;padding:8px 10px;font-weight:900;cursor:pointer;white-space:nowrap}.bvFlavorAdminRow,.bvNewFlavorRow{display:grid;grid-template-columns:minmax(0,1fr) 90px 68px 38px;gap:6px;margin-top:7px}.bvNewFlavorRow{grid-template-columns:minmax(0,1fr) 90px 38px}.bvFlavorAdminRow input,.bvNewFlavorRow input{width:100%;box-sizing:border-box;background:#080a0d;color:#fff;border:1px solid #343a44;border-radius:8px;padding:9px}.bvFlavorAdminRow button,.bvNewFlavorRow button{border:1px solid #343a44;border-radius:8px;background:#20242a;color:#fff;font-weight:900;cursor:pointer}.bvFlavorAdminRow .bvFlavorSave{background:#e50914;border-color:#e50914}.bvFlavorAdminRow .bvFlavorRemove,.bvNewFlavorRow .bvNewFlavorDel{font-size:18px}.bvFlavorEmpty{display:block;color:#8f96a0;padding:5px 0}.bvGenericFlavorModal{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.78)}.bvGenericFlavorBox{width:min(430px,100%);padding:20px;border-radius:18px;background:#17191d;color:#fff;border:1px solid #343a44}.bvGenericFlavorClose{float:right;background:none;border:0;color:#fff;font-size:28px}.bvGenericFlavorChoices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.bvGenericFlavorChoices button{padding:14px;border:1px solid #343a44;border-radius:12px;background:#22262d;color:#fff;font-weight:900}.bvGenericFlavorChoices button:disabled{opacity:.45}@media(max-width:600px){.bvFlavorAdminRow{grid-template-columns:minmax(0,1fr) 76px 60px 34px}.bvNewFlavorRow{grid-template-columns:minmax(0,1fr) 76px 34px}.bvGenericFlavorChoices{grid-template-columns:1fr}}';document.head.appendChild(st);
 document.addEventListener('DOMContentLoaded',install,{once:true});setTimeout(install,1000);
 })();
+(function(){if(document.getElementById('bvProductImageStyle'))return;const st=document.createElement('style');st.id='bvProductImageStyle';st.textContent='.bvProductImageField{margin-top:12px}.bvImagePickerRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.bvImportImageBtn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}.bvImageName{font-size:12px;opacity:.72}.bvProductImagePreview{display:block;width:110px;height:110px;object-fit:cover;border-radius:14px;margin-top:10px}';document.head.appendChild(st)})();
