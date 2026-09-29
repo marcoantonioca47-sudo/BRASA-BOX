@@ -60,7 +60,7 @@ function watch(){
           );
           playOrderSound();
         }
-      }      }else if(!isAdmin){
+      }else if(!isAdmin){
         if(old[o.id]&&old[o.id]!==o.rawStatus&&o.rawStatus==='saiu_entrega'&&String(localStorage.getItem('bv_track_id')||'')===String(o.id)){
           addN(
             '🛵 Pedido saiu para entrega',
