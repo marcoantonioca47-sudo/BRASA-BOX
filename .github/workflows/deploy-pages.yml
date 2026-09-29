@@ -72,7 +72,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           h=Path("index.html").read_text(encoding="utf-8").lower()
-          checks={"doctype":"<!doctype html" in h,"body":("<body" in h and "</body>" in h),"main":"<main" in h,"login":"id="login"" in h}
+          checks={"doctype":"<!doctype html" in h,"body":("<body" in h and "</body>" in h),"main":"<main" in h,"login":'id="login"' in h}
           print(checks)
           if not all(checks.values()):
               raise SystemExit(1)
