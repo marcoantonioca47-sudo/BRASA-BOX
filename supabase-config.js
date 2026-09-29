@@ -3,7 +3,7 @@
 // Nunca coloque uma service_role/secret key neste arquivo.
 window.BV_SUPABASE_CONFIG = {
   url: 'https://abfxvqrrsqrmykrdoqrp.supabase.co',
-  publishableKey: '__SUPABASE_ANON_KEY__'
+  publishableKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZnh2cXJyc3FybXlrcmRvcXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MzgwOTIsImV4cCI6MjEwNjIxNDA5Mn0.-J-p8CLkXKp38sy3B_r7nh2kgUScr6hWJhWrkwYGCBg'
 };
 (function(){
   var p=document.createElement('script');
