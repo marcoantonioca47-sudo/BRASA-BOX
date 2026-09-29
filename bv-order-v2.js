@@ -223,8 +223,16 @@
           }catch(e){pixError=e?.message||pixError||'Não foi possível gerar o PIX.'}
         }
         if(!pixData){
-          console.warn('[BV ORDER V2] PIX não gerado',pixError);
-          window.BV_LAST_PIX_ERROR=pixError||'Não foi possível gerar o PIX.';
+          console.warn('[BV ORDER V2] PIX online não gerado',pixError);
+          window.BV_LAST_PIX_ERROR=pixError||'Não foi possível gerar o PIX online.';
+          // Fallback: usa a chave Pix cadastrada na loja e gera o BR Code no próprio navegador.
+          // Isso mantém o checkout funcional mesmo sem uma Edge Function/gateway configurado.
+          try{
+            if(window.BrasaPayments?.showPix){
+              await window.BrasaPayments.showPix({id:orderId,orderNumber:orderId,total:createdTotalFallback()});
+              window.BV_LAST_PIX_ERROR='';
+            }
+          }catch(e){ console.warn('[BV ORDER V2] fallback PIX',e); }
         }else{
           window.BV_LAST_PIX=pixData;window.BV_LAST_PIX_ERROR='';
           const current=(window.orders||[]).find(o=>String(o.id)===String(orderId));
@@ -248,6 +256,9 @@
       }
 
       const created=(window.orders || []).find(o=>String(o.id)===String(orderId));
+      function createdTotalFallback(){
+        return Number(created?.total || window.BV_LAST_ORDER_TOTAL || 0);
+      }
       if(payment==='pix'){
         if(window.BV_LAST_PIX_ERROR){
           window.bvModal?.({
