@@ -3,7 +3,7 @@
 // Não reutilize o projeto Supabase antigo.
 // Nunca coloque aqui uma secret/service_role key.
 window.BV_SUPABASE_CONFIG = {
-  url: 'COLE_AQUI_A_URL_DO_NOVO_SUPABASE',
+  url: 'https://abfxvqrrsqrmykrdoqrp.supabase.co',
   publishableKey: 'COLE_AQUI_A_PUBLISHABLE_KEY_DO_NOVO_SUPABASE'
 };
 (function(){
