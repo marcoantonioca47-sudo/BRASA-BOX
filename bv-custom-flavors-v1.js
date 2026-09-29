@@ -85,6 +85,7 @@ function wrapAddProduct(){
      if(!imageFile.type.startsWith('image/'))return window.toast?.('Selecione uma imagem válida.');
      if(imageFile.size>8*1024*1024)return window.toast?.('A imagem deve ter no máximo 8 MB.');
      imageUrl=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const max=900,sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.82));};im.onerror=reject;im.src=rd.result};rd.onerror=reject;rd.readAsDataURL(imageFile)});
+   }
    if(!n||!Number.isFinite(price)||price<0)return window.toast?.('Preencha nome e valor corretamente.');
    const btn=form.querySelector('.formSave');if(btn){btn.disabled=true;btn.textContent='Cadastrando...'}
    try{
