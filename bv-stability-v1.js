@@ -460,7 +460,7 @@ window.BV_ADD_PRODUCT_TO_CART=(p,flavor='')=>{
     // Estado do pagamento fica sincronizado com o botão visível.
     // Evita reaproveitar acidentalmente um método antigo do navegador.
     const current=String(window.BV_PAYMENT||'').toLowerCase();
-    if(current!=='pix'&&current!=='dinheiro'&&current!=='cartão'&&current!=='cartao'){
+    if(current!=='pix'&&current!=='dinheiro'&&current!=='cartão'&&current!=='cartao'&&current!=='a prazo'){
       window.BV_PAYMENT='Pix';
     }
     const buttons=[...document.querySelectorAll('#page-pedido .pay button')];
@@ -468,7 +468,7 @@ window.BV_ADD_PRODUCT_TO_CART=(p,flavor='')=>{
     const active=buttons.find(x=>x.classList.contains('active'));
     if(active){
       const t=String(active.textContent||'').toLowerCase();
-      const label=t.includes('dinheiro')?'Dinheiro':t.includes('cart')?'Cartão':'Pix';
+      const label=t.includes('dinheiro')?'Dinheiro':t.includes('cart')?'Cartão':t.includes('prazo')?'A prazo':'Pix';
       window.BV_PAYMENT=label;
       localStorage.setItem('bv_payment',label);
       $('troco')?.classList.toggle('hide',label!=='Dinheiro');
