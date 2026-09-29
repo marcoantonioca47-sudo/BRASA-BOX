@@ -9,9 +9,12 @@
   window.BV_DB_READY = false;
   try {
     if (!validConfig) throw new Error('Novo Supabase ainda não configurado.');
+    const storeSlug = String(new URLSearchParams(window.location.search).get('loja') || 'brasabox-demo').trim().toLowerCase();
     client = window.supabase?.createClient(URL, KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+      global: { headers: { 'x-store-slug': storeSlug } }
     });
+    window.BV_STORE_SLUG = storeSlug;
     window.BV_SUPABASE = client;
     window.BV_DB_READY = !!client;
   } catch (e) {
@@ -34,10 +37,11 @@
   // O cache local serve apenas como apoio visual; nunca é usado como fonte de autorização.
   window.BV_SYNC_PERMISSIONS = async function(userId, fallbackEmail='') {
     if (!client || !userId) return {error:'Usuário não identificado.'};
-    const {data:profile,error} = await client.from('profiles').select('id,name,role').eq('id',userId).maybeSingle();
+    const {data:profile,error} = await client.from('profiles').select('id,name,role,store_id').eq('id',userId).maybeSingle();
     if (error) return {error:error.message};
     if (!profile) return {error:'Sua conta existe, mas não possui um perfil cadastrado.'};
     const role=String(profile.role||'usuario').trim().toLowerCase();
+    window.BV_STORE_ID=profile.store_id||window.BV_STORE_ID||null;
     window.BV_ROLE=role;
     window.BV_USER_NAME=profile.name || fallbackEmail || '';
     try{
@@ -196,9 +200,9 @@
     const { data } = await client.auth.getSession();
     if (data?.session && firstLoginDone()) {
       try {
-        const p = await client.from('profiles').select('name,role').eq('id',data.session.user.id).maybeSingle();
+        const p = await client.from('profiles').select('name,role,store_id').eq('id',data.session.user.id).maybeSingle();
         if (p.data) {
-          window.BV_ROLE = p.data.role || 'usuario';
+          window.BV_ROLE = p.data.role || 'usuario'; window.BV_STORE_ID=p.data.store_id||null;
           window.BV_USER_NAME = p.data.name || data.session.user.email || ''; window.renderLoggedUser?.();
           window.applyAccess?.();
           $('login')?.style.setProperty('display','none','important');
