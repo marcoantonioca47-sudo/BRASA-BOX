@@ -1,0 +1,78 @@
+/* BRASABOX — cadastro de produto mobile: trava da página + botão sempre acessível */
+@media (max-width:600px){
+  html.bvProductLock,body.bvProductLock{
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:100%!important;
+    max-height:100%!important;
+  }
+
+  #page-produtos #productFormPanel.show,
+  #page-produtos #productFormPanel.open{
+    position:fixed!important;
+    inset:0!important;
+    z-index:2147483000!important;
+    display:flex!important;
+    width:100vw!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    margin:0!important;
+    padding:10px!important;
+    box-sizing:border-box!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+    background:rgba(0,0,0,.82)!important;
+    overscroll-behavior:none!important;
+  }
+
+  #page-produtos #productFormPanel.show .productFormModal,
+  #page-produtos #productFormPanel.open .productFormModal{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    max-width:560px!important;
+    height:calc(100dvh - 20px)!important;
+    max-height:calc(100dvh - 20px)!important;
+    margin:0!important;
+    padding:0!important;
+    box-sizing:border-box!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  #page-produtos #productFormPanel.show .productFormHero,
+  #page-produtos #productFormPanel.open .productFormHero{
+    position:sticky!important;
+    top:0!important;
+    z-index:100!important;
+    margin:0!important;
+  }
+
+  #page-produtos #productFormPanel.show .productForm,
+  #page-produtos #productFormPanel.open .productForm{
+    display:grid!important;
+    min-height:0!important;
+    padding:16px 16px 90px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+  }
+
+  #page-produtos #productFormPanel.show .productForm .formSave,
+  #page-produtos #productFormPanel.open .productForm .formSave{
+    position:sticky!important;
+    bottom:8px!important;
+    z-index:200!important;
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-height:50px!important;
+    margin:8px 0 0!important;
+    box-sizing:border-box!important;
+    background:linear-gradient(135deg,#ff2530,#b90008)!important;
+    box-shadow:0 -16px 28px rgba(15,17,21,.96),0 8px 24px rgba(229,9,20,.22)!important;
+  }
+}
