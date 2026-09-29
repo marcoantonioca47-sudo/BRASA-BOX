@@ -1463,7 +1463,7 @@ window.BV_TRACKING_REALTIME=null;
     // Atualização de dados sem bloquear a abertura do aplicativo.
     Promise.all([
       sb.from('products').select('*').order('created_at'),
-      sb.from('settings').select('fee,whatsapp,store_open').eq('id',1).maybeSingle()
+      sb.from('settings').select('fee,whatsapp,store_open').eq('store_id',window.BV_STORE_ID).maybeSingle()
     ]).then(async([pr,st])=>{
       if(!pr.error && Array.isArray(pr.data)){
         window.products=pr.data;

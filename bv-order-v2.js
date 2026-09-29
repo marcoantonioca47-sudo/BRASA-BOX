@@ -37,7 +37,7 @@
       const {data:storeSettings,error:storeError} = await sb
         .from('settings')
         .select('store_open')
-        .eq('id',1)
+        .eq('store_id',window.BV_STORE_ID)
         .maybeSingle();
       if(storeError) throw new Error('Não foi possível verificar o status da loja: ' + storeError.message);
       if(storeSettings?.store_open === false){
