@@ -1,0 +1,429 @@
+/* BRASABOX — FORMATAÇÃO GERAL PREMIUM 2026.09.24.7 */
+:root{
+  --bv-red:#e50914;
+  --bv-red-2:#ff2530;
+  --bv-bg:#08090b;
+  --bv-panel:#111318;
+  --bv-panel-2:#171a20;
+  --bv-border:rgba(255,255,255,.09);
+  --bv-muted:#8f96a1;
+  --bv-text:#f7f7f8;
+  --bv-shadow:0 18px 50px rgba(0,0,0,.32);
+  --bv-radius:16px;
+}
+*{box-sizing:border-box}
+html{background:var(--bv-bg);scroll-behavior:smooth}
+body{
+  margin:0;background:
+  radial-gradient(circle at 90% -10%,rgba(229,9,20,.10),transparent 28%),
+  radial-gradient(circle at -10% 60%,rgba(255,255,255,.035),transparent 24%),
+  var(--bv-bg);
+  color:var(--bv-text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit}
+button{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}
+button:active{transform:scale(.98)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid rgba(229,9,20,.55);outline-offset:2px
+}
+.sidebar{
+  background:linear-gradient(180deg,#0d0f12 0%,#090a0c 100%);
+  border-right:1px solid var(--bv-border);
+  box-shadow:12px 0 40px rgba(0,0,0,.18);
+}
+.sideBrand{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sideBrand .logo{font-size:24px;font-weight:950;letter-spacing:-1px}
+.sideBrand .logo i{color:var(--bv-red);font-style:italic}
+.sideUser{
+  margin:14px 12px;padding:13px;border:1px solid var(--bv-border);
+  border-radius:14px;background:linear-gradient(145deg,#171a1f,#0f1114);
+  box-shadow:0 10px 30px rgba(0,0,0,.18)
+}
+.avatar{box-shadow:0 0 0 4px rgba(229,9,20,.08)}
+.sideNav{padding:10px}
+.sideNav button{
+  min-height:44px;margin:3px 0;border:1px solid transparent;border-radius:11px;
+  background:transparent;color:#aeb4bd;text-align:left;font-weight:750;
+}
+.sideNav button:hover{background:#15181d;color:#fff;border-color:rgba(255,255,255,.06)}
+.sideNav button.active,.sideNav button[aria-current="page"]{
+  color:#fff;background:linear-gradient(135deg,rgba(229,9,20,.18),rgba(229,9,20,.06));
+  border-color:rgba(229,9,20,.35);box-shadow:inset 3px 0 0 var(--bv-red)
+}
+.navTitle{color:#666e78!important;letter-spacing:1.4px!important;font-size:10px!important}
+.sideBottom{padding:12px;border-top:1px solid rgba(255,255,255,.06)}
+.logoutBtn,.adminBtn{border-radius:11px!important}
+.app{background:transparent}
+.topbar{
+  min-height:72px;background:rgba(8,9,11,.86);backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);box-shadow:0 8px 30px rgba(0,0,0,.12)
+}
+.pageKicker{color:#777f8b!important;font-weight:900!important;letter-spacing:1.8px!important;font-size:9px!important}
+.topbar h1{font-size:20px!important;letter-spacing:-.3px}
+.topActions{gap:8px!important}
+.adminState{
+  padding:7px 11px;border:1px solid rgba(32,232,120,.18);border-radius:20px;
+  background:rgba(32,232,120,.06);color:#63dc92!important;font-weight:850!important;font-size:10px!important
+}
+.content{max-width:1480px;margin:0 auto}
+.page{padding-bottom:45px}
+.sectionTitle,.adminTop{
+  margin-bottom:18px!important;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06)
+}
+.sectionTitle h2,.adminTop h2{font-size:28px!important;letter-spacing:-.8px!important;margin:3px 0!important}
+.eyebrow{font-size:9px!important;letter-spacing:1.7px!important;color:#737b86!important;font-weight:950!important}
+.panel,.checkout .panel,.trackingGrid .panel,.settingsPanel,.permissionsPanel,.couponCard{
+  background:linear-gradient(145deg,rgba(22,25,30,.96),rgba(13,15,18,.98))!important;
+  border:1px solid var(--bv-border)!important;border-radius:var(--bv-radius)!important;
+  box-shadow:var(--bv-shadow)!important
+}
+.panel{padding:18px}
+.panel h3{font-size:16px;letter-spacing:-.2px}
+input,select,textarea{
+  background:#0b0d10!important;color:#f4f4f5!important;
+  border:1px solid #2a2f37!important;border-radius:11px!important;
+  min-height:44px;padding:0 13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)
+}
+textarea{padding:12px 13px}
+input::placeholder,textarea::placeholder{color:#626a75}
+input:hover,select:hover,textarea:hover{border-color:#3a414b!important}
+input:focus,select:focus,textarea:focus{
+  border-color:rgba(229,9,20,.65)!important;box-shadow:0 0 0 3px rgba(229,9,20,.08)!important
+}
+.whats,.formSave,.adminTopActions button,.adminTop>button,.trackingGrid button,.settingsPanel>button{
+  border-radius:11px!important;background:linear-gradient(135deg,var(--bv-red-2),#b90008)!important;
+  border:1px solid #ff2530!important;color:#fff!important;font-weight:900!important;
+  box-shadow:0 10px 25px rgba(229,9,20,.18)!important
+}
+.whats:hover,.formSave:hover,.adminTopActions button:hover,.adminTop>button:hover,.trackingGrid button:hover,.settingsPanel>button:hover{
+  transform:translateY(-1px);box-shadow:0 13px 30px rgba(229,9,20,.25)!important
+}
+.pay,.tabs{gap:8px!important}
+.pay button,.tabs button{
+  min-height:44px;border:1px solid #2e333b!important;border-radius:11px!important;
+  background:#12151a!important;color:#9da4ae!important;font-weight:800
+}
+.pay button.active,.tabs button.active{background:rgba(229,9,20,.12)!important;border-color:var(--bv-red)!important;color:#fff!important}
+.cartItem,.order,.userPerm,.feeRow,.couponCard{
+  border-color:rgba(255,255,255,.08)!important
+}
+.cartItem,.order{
+  background:linear-gradient(145deg,#171a1f,#101216)!important;border-radius:13px!important
+}
+.order:hover,.cartItem:hover{border-color:rgba(229,9,20,.22)!important}
+.orderMeta span{background:#1b1f25!important;border:1px solid rgba(255,255,255,.05)}
+.stats{
+  gap:12px!important
+}
+.stats>div{
+  position:relative;overflow:hidden;border:1px solid var(--bv-border)!important;
+  border-radius:15px!important;background:linear-gradient(145deg,#181b21,#0f1115)!important;
+  box-shadow:0 14px 35px rgba(0,0,0,.24)!important
+}
+.stats>div:after{
+  content:"";position:absolute;width:90px;height:90px;right:-35px;top:-35px;border-radius:50%;
+  background:radial-gradient(circle,rgba(229,9,20,.17),transparent 70%)
+}
+.stats b{font-size:26px!important;letter-spacing:-.8px}
+.dashboardChart{padding:10px 4px 0}
+.chartTrack{background:#0b0d10!important;border-color:#292e35!important}
+.chartFill{background:linear-gradient(180deg,#ff2530,#a80008)!important;box-shadow:0 -5px 20px rgba(229,9,20,.12)}
+.grid{
+  gap:14px!important
+}
+.productCard{
+  overflow:hidden;border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:16px!important;background:linear-gradient(145deg,#171a1f,#0d0f12)!important;
+  box-shadow:0 14px 35px rgba(0,0,0,.22)!important;transition:.2s ease!important
+}
+.productCard:hover{transform:translateY(-3px);border-color:rgba(229,9,20,.35)!important;box-shadow:0 18px 42px rgba(0,0,0,.34)!important}
+.productCard .productInfo{padding:15px!important}
+.productCard h3{font-size:15px!important}
+.productCard .price{font-size:18px!important;color:#fff!important;font-weight:950!important}
+.productCard button{border-radius:10px!important}
+.homeFeature{box-shadow:0 14px 35px rgba(0,0,0,.24)!important}
+.login{
+  background:linear-gradient(145deg,rgba(22,24,29,.97),rgba(10,11,14,.98))!important;
+  border:1px solid rgba(255,255,255,.11)!important;border-radius:22px!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.62)!important;backdrop-filter:blur(18px)
+}
+.login .logo{font-weight:950!important;letter-spacing:-1px}
+.login input{height:48px!important}
+.login>button:not(.registerLoginBtn){
+  height:48px!important;border-radius:11px!important;background:linear-gradient(135deg,var(--bv-red-2),#b90008)!important;
+  box-shadow:0 12px 28px rgba(229,9,20,.2)
+}
+.registerLoginBtn{border-radius:10px!important}
+.notificationCenter{
+  background:linear-gradient(145deg,#171a20,#0e1013)!important;
+  border-color:rgba(255,255,255,.10)!important;box-shadow:0 25px 80px rgba(0,0,0,.55)!important
+}
+.toast{
+  border-radius:12px!important;box-shadow:0 18px 45px rgba(0,0,0,.45)!important
+}
+.motoOrder{
+  border:1px solid rgba(229,9,20,.24)!important;
+  background:linear-gradient(145deg,#18171a,#101113)!important;
+  box-shadow:0 15px 40px rgba(0,0,0,.25)!important
+}
+.motoFinishBtn{border-radius:11px!important}
+.motoFeeBtn{border-radius:11px!important}
+.permissionsPanel{box-shadow:0 18px 50px rgba(0,0,0,.28)!important}
+.userPerm{background:linear-gradient(145deg,#15171b,#101216)!important}
+.userPerm:hover{background:#181b20!important}
+.couponGrid{gap:14px!important}
+.couponCard{padding:22px!important}
+.couponCard span{
+  display:inline-grid;place-items:center;min-width:56px;height:34px;padding:0 10px;
+  border-radius:9px;background:rgba(229,9,20,.10);border:1px solid rgba(229,9,20,.25);color:#ff5b63;font-weight:950
+}
+.smartFilters{background:linear-gradient(145deg,#16191e,#101216)!important}
+.filterClear{border-radius:10px!important}
+.menuCategoryTabs button{border-radius:11px!important}
+.emptyMenu,.emptyFilter{
+  background:linear-gradient(145deg,#12151a,#0d0f12)!important;border-color:#2b3038!important
+}
+@media(max-width:850px){
+  .topbar{min-height:64px}
+  .sectionTitle h2,.adminTop h2{font-size:24px!important}
+  .panel{padding:15px}
+  .stats{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:600px){
+  body{font-size:14px}
+  .content{padding-left:12px!important;padding-right:12px!important}
+  .topbar h1{font-size:17px!important}
+  .topActions{gap:5px!important}
+  .loggedUserName{max-width:110px!important}
+  .stats{grid-template-columns:1fr!important}
+  .stats>div{min-height:92px}
+  .sectionTitle,.adminTop{margin-bottom:13px!important}
+  .panel{border-radius:14px!important}
+  .checkout,.trackingGrid{gap:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+
+/* Contatos do motoboy: endereço e celular em destaque */
+.motoContactInfo{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.motoContactItem{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+}
+.motoContactItem span{
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  opacity:.72;
+}
+.motoContactItem strong{
+  font-size:18px;
+  line-height:1.35;
+  font-weight:900;
+  color:#fff;
+  word-break:break-word;
+}
+.motoContactItem:nth-child(2) strong{
+  font-size:20px;
+}
+@media(max-width:600px){
+  .motoContactItem strong{font-size:19px}
+  .motoContactItem:nth-child(2) strong{font-size:21px}
+}
+
+.motoFeeSummary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.motoFeeSummary>div,.motoFeeOrder{background:linear-gradient(145deg,#18171a,#101113);border:1px solid rgba(229,9,20,.2);border-radius:14px;padding:16px}
+.motoFeeSummary small,.motoFeeOrder small{display:block;font-size:11px;font-weight:900;letter-spacing:.5px;opacity:.7;margin-bottom:5px}
+.motoFeeSummary strong{font-size:22px}
+.motoFeeList{display:grid;gap:10px}
+.motoFeeOrder{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:center}
+.motoFeeOrder b{font-size:21px}
+.motoFeeOrder strong{font-size:18px}
+@media(max-width:600px){.motoFeeSummary{grid-template-columns:1fr 1fr}.motoFeeOrder{grid-template-columns:1fr 1fr}.motoFeeOrder>div:last-child{grid-column:1/-1}}
+
+/* Tela Taxa de entrega — visual compacto */
+.motoFeeHeader{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.motoFeeHeader>div{padding:16px 18px;border-radius:16px;background:linear-gradient(145deg,#1b1b1f,#101114);border:1px solid rgba(229,9,20,.28);box-shadow:0 10px 28px rgba(0,0,0,.22)}
+.motoFeeHeader small{display:block;font-size:10px;font-weight:900;letter-spacing:1px;opacity:.65;margin-bottom:6px}
+.motoFeeHeader strong{font-size:22px;font-weight:950}
+.motoFeeList{display:grid;gap:10px}
+.motoFeeOrder{display:flex!important;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px!important;border-radius:14px!important;background:linear-gradient(145deg,#18181b,#0f1012)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:0 7px 20px rgba(0,0,0,.18)}
+.motoFeeOrderNumber,.motoFeeValue{display:flex;flex-direction:column;gap:4px}
+.motoFeeOrder small{font-size:10px!important;font-weight:900!important;letter-spacing:1px!important;opacity:.58!important;margin:0!important}
+.motoFeeOrderNumber b{font-size:22px!important;font-weight:950!important}
+.motoFeeValue{text-align:right}
+.motoFeeValue strong{font-size:20px!important;font-weight:950!important}
+@media(max-width:600px){.motoFeeHeader{grid-template-columns:1fr 1fr}.motoFeeOrder{padding:14px!important}.motoFeeOrderNumber b{font-size:20px!important}.motoFeeValue strong{font-size:18px!important}}
+
+
+/* Checkout — campo de troco no mesmo padrão premium do site */
+#page-pedido #troco{
+  width:100%;
+  min-height:48px;
+  margin:10px 0 12px;
+  padding:0 15px;
+  border:1px solid rgba(229,9,20,.28)!important;
+  border-radius:12px!important;
+  background:linear-gradient(145deg,#171a1f,#0d0f12)!important;
+  color:#fff!important;
+  font-size:15px!important;
+  font-weight:850!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 22px rgba(0,0,0,.16)!important;
+  transition:.2s ease;
+}
+#page-pedido #troco::placeholder{
+  color:#8f96a1;
+  font-weight:750;
+}
+#page-pedido #troco:hover{
+  border-color:rgba(229,9,20,.48)!important;
+}
+#page-pedido #troco:focus{
+  border-color:#e50914!important;
+  box-shadow:0 0 0 3px rgba(229,9,20,.10),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+#page-pedido #troco.hide{
+  display:none!important;
+}
+#page-pedido #troco:not(.hide){
+  animation:bvTrocoIn .18s ease both;
+}
+@keyframes bvTrocoIn{
+  from{opacity:0;transform:translateY(-4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:600px){
+  #page-pedido #troco{
+    min-height:50px;
+    margin:9px 0 12px;
+    padding:0 14px;
+    font-size:16px!important;
+  }
+}
+
+/* Modais de confirmação — padrão BrasaBox */
+#bvSystemModal.bvSystemModal{
+  position:fixed!important;
+  inset:0!important;
+  z-index:99999!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:18px!important;
+  background:rgba(0,0,0,.72)!important;
+  backdrop-filter:blur(9px)!important;
+  -webkit-backdrop-filter:blur(9px)!important;
+  opacity:0;
+  transition:opacity .18s ease;
+}
+#bvSystemModal.bvSystemModal.show{opacity:1}
+#bvSystemModal .bvSystemModalCard{
+  width:min(430px,100%)!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+  border-radius:20px!important;
+  background:linear-gradient(145deg,#181b20,#0d0f12)!important;
+  color:#fff!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.65)!important;
+  transform:translateY(8px) scale(.98);
+  transition:transform .18s ease;
+}
+#bvSystemModal.show .bvSystemModalCard{transform:translateY(0) scale(1)}
+#bvSystemModal .bvSystemModalTop{
+  display:flex!important;
+  align-items:center!important;
+  gap:13px!important;
+  padding:19px 19px 15px!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.01))!important;
+}
+#bvSystemModal .bvSystemModalIcon{
+  width:46px!important;height:46px!important;flex:0 0 46px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:14px!important;
+  background:rgba(229,9,20,.13)!important;
+  border:1px solid rgba(229,9,20,.34)!important;
+  color:#ff4b55!important;
+  font-size:20px!important;font-weight:950!important;
+  box-shadow:0 8px 22px rgba(229,9,20,.12)!important;
+}
+#bvSystemModal .bvSystemModalKicker{
+  display:block!important;
+  color:#ff5961!important;
+  font-size:9px!important;
+  font-weight:950!important;
+  letter-spacing:1.4px!important;
+}
+#bvSystemModal .bvSystemModalTitle{
+  margin:4px 0 0!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:950!important;
+  letter-spacing:-.3px!important;
+}
+#bvSystemModal .bvSystemModalBody{
+  padding:18px 19px!important;
+  color:#b9bec6!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+}
+#bvSystemModal .bvSystemModalBody strong{color:#fff!important}
+#bvSystemModal .bvSystemModalActions{
+  display:flex!important;
+  justify-content:flex-end!important;
+  gap:9px!important;
+  padding:0 19px 19px!important;
+}
+#bvSystemModal .bvSystemModalBtn{
+  min-height:44px!important;
+  padding:0 18px!important;
+  border:1px solid #ff2530!important;
+  border-radius:11px!important;
+  background:linear-gradient(135deg,#ff2530,#b90008)!important;
+  color:#fff!important;
+  font-weight:900!important;
+  box-shadow:0 10px 25px rgba(229,9,20,.18)!important;
+}
+#bvSystemModal .bvSystemModalBtn:hover{transform:translateY(-1px)}
+@media(max-width:600px){
+  #bvSystemModal.bvSystemModal{padding:13px!important}
+  #bvSystemModal .bvSystemModalCard{border-radius:18px!important}
+  #bvSystemModal .bvSystemModalTop{padding:17px 16px 14px!important}
+  #bvSystemModal .bvSystemModalBody{padding:16px!important}
+  #bvSystemModal .bvSystemModalActions{padding:0 16px 16px!important}
+  #bvSystemModal .bvSystemModalBtn{width:100%!important}
+}
+
+#bvCancelConfirmModal .bvCancelActions{justify-content:stretch!important}
+#bvCancelConfirmModal .bvCancelActions button{flex:1!important;min-height:44px!important;border-radius:11px!important;font-weight:900!important}
+#bvCancelConfirmModal .bvCancelKeepBtn{
+  border:1px solid #343a44!important;
+  background:#20242a!important;
+  color:#fff!important;
+}
+#bvCancelConfirmModal .bvCancelKeepBtn:hover{background:#292e35!important}
+#bvCancelConfirmModal .bvCancelConfirmBtn{
+  border:1px solid #ff2530!important;
+  background:linear-gradient(135deg,#ff2530,#b90008)!important;
+  color:#fff!important;
+  box-shadow:0 10px 25px rgba(229,9,20,.18)!important;
+}
+#bvCancelConfirmModal .bvCancelConfirmBtn:hover{transform:translateY(-1px)}
+@media(max-width:600px){
+  #bvCancelConfirmModal .bvCancelActions{flex-direction:column-reverse!important}
+}

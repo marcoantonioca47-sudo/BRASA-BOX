@@ -1,0 +1,55 @@
+/* Seleção de itens — vermelho vitrificado BrasaBox */
+#page-cardapio .menuCategoryTabs button{
+  position:relative!important;
+  overflow:hidden!important;
+  background:linear-gradient(145deg,#17191e,#101216)!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  color:#bfc4cc!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 5px 14px rgba(0,0,0,.18)!important;
+}
+#page-cardapio .menuCategoryTabs button:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.13),transparent 35%,rgba(255,255,255,.025) 65%,transparent)!important;
+  pointer-events:none!important;
+}
+#page-cardapio .menuCategoryTabs button:hover{
+  transform:translateY(-1px)!important;
+  border-color:rgba(229,9,20,.55)!important;
+  color:#fff!important;
+  box-shadow:0 8px 22px rgba(229,9,20,.16),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+#page-cardapio .menuCategoryTabs button.active{
+  background:linear-gradient(145deg,#ff2933 0%,#e50914 45%,#9e0008 100%)!important;
+  border:1px solid #ff4b53!important;
+  color:#fff!important;
+  box-shadow:
+    0 8px 24px rgba(229,9,20,.32),
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 -5px 12px rgba(90,0,0,.18)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.35)!important;
+}
+#page-cardapio .menuCategoryTabs button.active:after{
+  content:""!important;
+  position:absolute!important;
+  left:14px!important;right:14px!important;bottom:4px!important;
+  height:2px!important;border-radius:3px!important;
+  background:rgba(255,255,255,.42)!important;
+}
+#page-cardapio .menuCategoryTabs button .bv-real-icon{
+  color:currentColor!important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))!important;
+}
+@media(max-width:600px){
+  #page-cardapio .menuCategoryTabs{
+    padding:4px!important;
+    background:#0d0f13!important;
+    border:1px solid rgba(255,255,255,.06)!important;
+    border-radius:14px!important;
+  }
+  #page-cardapio .menuCategoryTabs button{
+    min-height:44px!important;
+    flex:1 1 auto!important;
+  }
+}

@@ -1,0 +1,24 @@
+/* Ícones realistas BrasaBox */
+.bv-real-icon{
+  display:inline-flex!important;
+  width:1.12em!important;height:1.12em!important;
+  min-width:1.12em!important;
+  vertical-align:-.18em!important;
+  align-items:center!important;justify-content:center!important;
+  color:currentColor!important;
+  line-height:1!important;
+  margin:0 .10em!important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));
+}
+.bv-real-icon svg{width:100%!important;height:100%!important;fill:currentColor!important;display:block!important}
+.sideNav .bv-real-icon{width:1.25em!important;height:1.25em!important;color:#d7dbe1!important}
+.sideNav button.active .bv-real-icon,.sideNav button:hover .bv-real-icon{color:#fff!important}
+.homeFeature>span .bv-real-icon{width:1.65em!important;height:1.65em!important;color:#fff!important}
+.homeHeroFood .bv-real-icon{width:1em!important;height:1em!important;color:#f3f4f5!important}
+.homeHeroActions .bv-real-icon{color:#fff!important}
+.menuCategoryTabs .bv-real-icon{color:currentColor!important}
+.pay .bv-real-icon{color:currentColor!important}
+.trackingIcon .bv-real-icon{width:1.8em!important;height:1.8em!important;color:#e50914!important}
+.notifyBtn .bv-real-icon,.cartTop .bv-real-icon{color:#fff!important}
+.homeFooter .bv-real-icon{color:#e50914!important}
+@media(max-width:600px){.sideNav .bv-real-icon{width:1.15em!important;height:1.15em!important}}

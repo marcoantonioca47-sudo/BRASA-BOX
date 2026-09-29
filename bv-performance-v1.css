@@ -1,0 +1,15 @@
+/* BRASABOX — otimização visual e de renderização v1 */
+html{scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeSpeed}
+img{content-visibility:auto}
+.page:not(.activePage){contain:layout paint style}
+.productCard,.homeFeature,.homeInfoCard,.homeHighlightGrid>button,.panel{contain:layout paint}
+#products .productImage img,.productImage img{display:block;width:100%;height:100%;object-fit:cover;content-visibility:auto}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+@media(max-width:600px){
+  .content{overscroll-behavior-x:none}
+  .page{min-width:0}
+  .productCard,.panel{box-shadow:0 10px 25px rgba(0,0,0,.18)!important}
+}

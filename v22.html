@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e50914">
+<link rel="manifest" href="manifest.json">
+<title>BRASABOX — V22</title>
+<link rel="stylesheet" href="style.css?v=13">
+</head>
+<body>
+<div id="login" class="overlay">
+  <div class="login">
+    <button class="closeLogin" onclick="closeLogin()">×</button>
+    <div class="logo">BV <i>LANCHES</i></div>
+    <small>PAINEL ADMINISTRATIVO</small>
+    <h1>Entrar</h1>
+    <input id="email" type="email" placeholder="E-mail">
+    <input id="pass" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+    <p id="err"></p>
+    <div class="demo">Admin: marco@bv.com / 123456<br>Usuário: usuario@bv.com / 123456</div>
+  </div>
+</div>
+
+<aside id="sidebar" class="sidebar">
+  <div class="sideBrand"><div class="logo">BV <i>LANCHES</i></div><button class="closeSide" onclick="toggleSidebar()">×</button></div>
+  <div class="sideUser"><div class="avatar">BV</div><div><b>BRASABOX</b><small>Sistema de pedidos</small></div></div>
+  <nav class="sideNav">
+    <button data-page="inicio" onclick="showPage('inicio')"><span>⌂</span> Início</button>
+    <button data-page="cardapio" onclick="showPage('cardapio')"><span>🍔</span> Cardápio</button>
+    <button class="adminHide" data-page="pedido" onclick="showPage('pedido')"><span>🛒</span> Meu pedido <b id="sideCount">0</b></button>
+    <button class="adminHide" data-page="acompanhar" onclick="showPage('acompanhar');renderTracking()"><span>🔎</span> Acompanhar pedido</button>
+    <div class="navTitle adminOnly">ADMINISTRAÇÃO</div>
+    <button class="adminOnly" data-page="dashboard" onclick="openAdmin('dashboard')"><span>▦</span> Dashboard</button>
+    <button class="adminOnly" data-page="pedidos" onclick="openAdmin('pedidos')"><span>📋</span> Pedidos <b id="sideNew">0</b></button>
+    <button class="adminOnly" data-page="produtos" onclick="openAdmin('produtos')"><span>📦</span> Produtos</button>
+    <button class="adminOnly" data-page="cupons" onclick="openAdmin('cupons')"><span>🎟</span> Cupons</button>
+    <button class="adminOnly" data-page="config" onclick="openAdmin('config')"><span>⚙</span> Configurações</button>
+  </nav>
+  <div class="sideBottom"><button onclick="openAdmin('dashboard')" class="adminBtn adminOnly">🔐 Painel administrativo</button><button onclick="logout()" class="logoutBtn">↪ Sair da conta</button></div>
+</aside>
+
+<div class="app">
+<header class="topbar">
+  <button class="menuBtn" onclick="toggleSidebar()">☰</button>
+  <div><div class="pageKicker">BRASABOX</div><h1 id="pageTitle">Início</h1></div>
+  <div class="topActions"><span id="adminState" class="adminState">Loja aberta</span><button class="cartTop" onclick="showPage('pedido')">🛒 <b id="count">0</b></button></div>
+</header>
+
+<main class="content">
+<section id="page-inicio" class="page activePage">
+  <div class="hero"><div><small>BRASABOX</small><h2>Sabor que conquista.</h2><p>Escolha seus favoritos, monte o pedido e acompanhe tudo pelo site.</p><button onclick="showPage('cardapio')">Ver cardápio</button></div></div>
+  <div class="quickGrid">
+    <button class="quickCard" onclick="showPage('cardapio')"><span>🍔</span><b>Cardápio</b><small>Veja nossos produtos</small></button>
+    <button class="quickCard" onclick="showPage('pedido')"><span>🛒</span><b>Meu pedido</b><small><em id="quickCount">0</em> itens no carrinho</small></button>
+    <button id="adminQuick" class="quickCard adminOnly" onclick="openAdmin('dashboard')"><span>📊</span><b>Administração</b><small>Acessar painel</small></button>
+  </div>
+</section>
+
+<section id="page-cardapio" class="page">
+  <div class="sectionTitle"><div><small class="eyebrow">LOJA</small><h2>Cardápio</h2></div><span class="pill green">ABERTO</span></div>
+  <div id="products" class="grid"></div>
+</section>
+
+<section id="page-pedido" class="page">
+  <div class="sectionTitle"><div><small class="eyebrow">CHECKOUT</small><h2>Meu pedido</h2></div></div>
+  <div class="checkout"><div class="panel"><h3>Itens do pedido</h3><div id="cart"></div><div class="line"><span>Subtotal</span><b id="sub">R$ 0,00</b></div><div class="line"><span>Entrega</span><b id="fee">R$ 0,00</b></div><div class="line total"><span>Total</span><b id="total">R$ 0,00</b></div></div>
+  <div class="panel"><h3>Entrega e pagamento</h3><div class="tabs"><button class="active" onclick="mode('entrega',this)">🚚 Entrega</button><button onclick="mode('retirada',this)">🏪 Retirada</button></div><div id="address"><input id="name" placeholder="Nome"><input id="phone" placeholder="WhatsApp"><div class="two"><input id="street" placeholder="Rua"><input id="num" placeholder="Nº"></div><div class="two"><input id="bairro" placeholder="Bairro"><input id="cep" placeholder="CEP"></div><input id="comp" placeholder="Complemento / referência"></div><h3>Pagamento</h3><div class="pay"><button class="active" onclick="pay('Pix',this)">🔷 Pix</button><button onclick="pay('Dinheiro',this)">💵 Dinheiro</button><button onclick="pay('Cartão',this)">💳 Cartão</button></div><input id="troco" class="hide" placeholder="Troco para quanto?"><input id="coupon" placeholder="Cupom de desconto"><button class="whats" onclick="finish()">✅ Finalizar pedido no site</button><small>Seu pedido será criado aqui e você receberá um número para acompanhar o status.</small></div></div>
+</section>
+
+<section id="page-acompanhar" class="page">
+  <div class="sectionTitle"><div><small class="eyebrow">PEDIDO</small><h2>Acompanhar pedido</h2></div></div>
+  <div class="trackingGrid">
+    <div class="panel">
+      <h3>Consultar pedido</h3>
+      <p class="muted">Informe o número do pedido e o WhatsApp usado na compra.</p>
+      <input id="trackId" placeholder="Número do pedido">
+      <input id="trackPhone" placeholder="WhatsApp">
+      <button class="trackBtn" onclick="trackOrder()">Consultar status</button>
+      <button class="trackLast" onclick="trackLastOrder()">Ver meu último pedido</button>
+    </div>
+    <div id="trackingResult" class="panel trackingResult"><p class="muted">Nenhum pedido selecionado.</p></div>
+  </div>
+</section>
+
+<section id="page-dashboard" class="page adminPage">
+  <div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Dashboard</h2><p>Visão geral da sua operação.</p></div><button onclick="logout()" class="dark">Sair</button></div>
+  <div class="stats"><div><small>Pedidos entregues</small><b id="sOrders">0</b></div><div><small>Faturamento entregue</small><b id="sRevenue">R$ 0,00</b></div><div><small>Ticket médio entregue</small><b id="sAvg">R$ 0,00</b></div><div><small>Pedidos pendentes</small><b id="sNew">0</b></div></div>
+  <div class="panel"><h3>Pedidos entregues</h3><div id="dashboardOrders"></div></div><div class="adminCards"><div class="panel"><h3>Acesso rápido</h3><div class="shortcutGrid"><button onclick="openAdmin('pedidos')">📋 Pedidos</button><button onclick="openAdmin('produtos')">📦 Produtos</button><button onclick="openAdmin('cupons')">🎟 Cupons</button><button onclick="openAdmin('config')">⚙ Configurações</button></div></div><div class="panel"><h3>Notificações</h3><p id="dashNotice" class="muted">Nenhum pedido novo.</p></div></div>
+</section>
+
+<section id="page-pedidos" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Pedidos</h2><p>Acompanhe e atualize o status dos pedidos.</p></div><button onclick="demoOrder()">+ Simular pedido</button></div><div class="panel"><div id="orders"></div></div></section>
+
+<section id="page-produtos" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Produtos</h2><p>Gerencie os produtos do cardápio.</p></div><button onclick="addProduct()">+ Adicionar produto</button></div><div class="panel productsManager"><div class="managerHeader"><div><h3>Produtos cadastrados</h3><p class="muted">Nome, valor e descrição exibidos de forma organizada.</p></div><button onclick="addProduct()">+ Novo produto</button></div><div id="manage"></div></div></section>
+
+<section id="page-cupons" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Cupons</h2><p>Cupons disponíveis na loja.</p></div></div><div class="couponGrid"><div class="couponCard"><span>10%</span><b>BV10</b><p>10% de desconto no pedido.</p></div><div class="couponCard"><span>R$ 5</span><b>PRIMEIRA</b><p>R$ 5,00 de desconto.</p></div></div></section>
+
+<section id="page-config" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Configurações</h2><p>Configure os dados da operação.</p></div></div><div class="panel settingsPanel"><label>Taxa padrão de entrega<input id="feeCfg" value="5" type="number" step="0.01" min="0"></label><label>WhatsApp para pedidos<input id="waCfg" value="5531984595968"></label><h3>Taxa de entrega por bairro</h3><p class="muted">Cadastre um bairro e o valor da entrega. O sistema usará automaticamente a taxa correspondente ao bairro informado no pedido.</p><div class="two"><input id="bairroCfg" placeholder="Nome do bairro"><input id="bairroFeeCfg" type="number" step="0.01" min="0" placeholder="Taxa (R$)"></div><button onclick="addBairroFee()">+ Adicionar bairro</button><div id="bairroFees"></div><button onclick="saveCfg()">Salvar configurações</button></div></section>
+</main>
+</div>
+<div id="toast"></div>
+<script src="app-v22.js"></script>
+</body></html>

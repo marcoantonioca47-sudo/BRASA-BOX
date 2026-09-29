@@ -1,0 +1,507 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"><meta name="theme-color" content="#e50914"><link rel="manifest" href="./manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="BrasaBox"><link rel="apple-touch-icon" href="./icon-192.png?v=20260926.1005"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="bv-version" content="2026.09.27.3000"><meta name="description" content="BrasaBox — cardápio, pedidos online e acompanhamento de entrega."><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="dns-prefetch" href="//cdn.jsdelivr.net"><title>BRASABOX</title><link rel="stylesheet" href="style.css?v=20260926.1005"><link rel="stylesheet" href="product-form-override.css?v=20260926.1005"><style>#page-config .storeStatusControl{margin:18px 0;padding:15px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:linear-gradient(145deg,#15181d,#0d0f12);display:flex;align-items:center;justify-content:space-between;gap:15px}#page-config .storeStatusControl div{display:flex;flex-direction:column;gap:4px}#page-config .storeStatusControl small{font-size:10px;letter-spacing:1.2px;color:#9aa1aa;font-weight:900}#page-config .storeStatusControl b{font-size:18px;color:#fff}#page-config .storeStatusControl button{min-width:145px;height:42px;border:0;border-radius:10px;color:#fff;font-weight:900;cursor:pointer}#page-config .storeStatusControl.open button{background:#16834b}#page-config .storeStatusControl.closed button{background:#b5121b}@media(max-width:600px){#page-config .storeStatusControl{align-items:stretch;flex-direction:column}#page-config .storeStatusControl button{width:100%}}
+#registerModal{display:none;position:fixed;inset:0;width:100%;height:100%;z-index:10000;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}#registerModal.show{display:flex!important}#registerModal .registerBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(6px)}#registerModal .registerCard{position:relative;z-index:1;width:min(560px,100%);max-height:92dvh;overflow:auto;background:#0f1115;border:1px solid #343a44;border-radius:18px;box-shadow:0 25px 80px rgba(0,0,0,.65);color:#fff}.registerCard .productFormHero{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;padding:20px 22px;background:linear-gradient(145deg,#171a20,#101216);border-bottom:1px solid #2c3139}.registerCard .productFormHero small{color:#e50914;font-size:11px;font-weight:900;letter-spacing:1.2px}.registerCard .productFormHero h3{margin:5px 0;font-size:24px}.registerCard .productFormHero p{margin:0;color:#9ba1aa;font-size:13px}.productClose{width:40px;height:40px;flex:none;border-radius:10px;border:1px solid #343a44;background:#20242a;color:#fff;font-size:26px;line-height:1;cursor:pointer}.registerCard .productForm{padding:20px 22px}.registerCard .productForm label{display:block;margin-bottom:15px}.registerCard .productForm label>span{display:block;margin-bottom:7px;font-weight:800;font-size:13px}.registerCard .productForm input{width:100%;box-sizing:border-box;margin:0;padding:13px 14px;background:#080a0d;border:1px solid #343a44;color:#fff;border-radius:10px}.productFormActions{display:flex;gap:10px;justify-content:flex-end;margin-top:5px}.formCancel,.formSave{border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer}.formCancel{background:#20242a;color:#fff;border:1px solid #343a44}.formSave{background:#e50914;color:#fff;border:0}.registerErr{color:#ff6870;min-height:18px;font-size:13px;margin:5px 0}
+.cartPromotionItems{display:flex;flex-direction:column;gap:6px;margin:8px 0}.cartPromoItem{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}.cartPromoItem>span{font-size:18px}.cartPromoItem div{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;flex:1}.cartPromoItem b{font-size:13px;line-height:1.25}.cartPromoItem small{font-weight:800;opacity:.8;white-space:nowrap}.cartPromotionPrice{display:block;margin-top:4px;opacity:.8}</style><style>
+/* Produtos — mesmo padrão visual do restante do site */
+#page-produtos .adminTop{align-items:center!important}
+#page-produtos .adminTop>button{min-height:44px;padding:0 16px;font-size:13px}
+#page-produtos .panel{padding:18px!important}
+#page-produtos #manage{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#page-produtos #manage .productCard{height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.08)!important;border-radius:16px!important;background:linear-gradient(145deg,#171a1f,#0d0f12)!important;box-shadow:0 14px 35px rgba(0,0,0,.22)!important;transition:.2s ease!important}
+#page-produtos #manage .productCard:hover{transform:translateY(-3px);border-color:rgba(229,9,20,.35)!important;box-shadow:0 18px 42px rgba(0,0,0,.34)!important}
+#page-produtos #manage .productCard .productInfo{display:flex;flex-direction:column;flex:1;padding:15px!important}
+#page-produtos #manage .productCard .productBottom{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:10px!important;margin-top:auto!important;padding-top:12px!important}
+#page-produtos #manage .productCard .productBottom b{font-size:18px!important;color:#fff!important;font-weight:950!important}
+#page-produtos #manage .productCard .productBottom button{width:100%!important;min-height:42px!important;border-radius:10px!important;background:linear-gradient(135deg,#ff2530,#b90008)!important;border:1px solid #ff2530!important;color:#fff!important;font-weight:900!important;box-shadow:0 8px 20px rgba(229,9,20,.18)!important;cursor:pointer}
+#page-produtos #manage .productCard .productBottom button:hover{transform:translateY(-1px);box-shadow:0 11px 25px rgba(229,9,20,.25)!important}
+#page-produtos #manage .productCard .productInfo{display:flex;flex-direction:column;flex:1;padding:15px!important}
+#page-produtos #manage .productCard h3{font-size:15px!important}
+#page-produtos #manage .productCard .price{margin-top:auto;padding-top:12px;font-size:18px!important;color:#fff!important;font-weight:950!important}
+/* Cardápio e gerenciamento — padrão único de produtos */
+#page-cardapio #products,#page-produtos #manage{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#page-cardapio #products .productCard,#page-produtos #manage .productCard{height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.08)!important;border-radius:16px!important;background:linear-gradient(145deg,#171a1f,#0d0f12)!important;box-shadow:0 14px 35px rgba(0,0,0,.22)!important;transition:.2s ease!important}
+#page-cardapio #products .productCard:hover,#page-produtos #manage .productCard:hover{transform:translateY(-3px);border-color:rgba(229,9,20,.35)!important;box-shadow:0 18px 42px rgba(0,0,0,.34)!important}
+#page-cardapio #products .productInfo,#page-produtos #manage .productInfo{display:flex;flex-direction:column;flex:1;padding:15px!important}
+#page-cardapio #products .productInfo h3,#page-produtos #manage .productInfo h3{font-size:15px!important;margin:5px 0 7px}
+#page-cardapio #products .productInfo p,#page-produtos #manage .productInfo p{color:#8f96a0;line-height:1.5;margin:0}
+#page-cardapio #products .productBottom,#page-produtos #manage .productBottom{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:10px!important;margin-top:auto!important;padding-top:12px!important}
+#page-cardapio #products .productBottom b,#page-produtos #manage .productBottom b{font-size:18px!important;color:#fff!important;font-weight:950!important}
+#page-cardapio #products .productBottom button,#page-produtos #manage .productBottom button{width:100%!important;min-height:42px!important;border-radius:10px!important;background:linear-gradient(135deg,#ff2530,#b90008)!important;border:1px solid #ff2530!important;color:#fff!important;font-weight:900!important;box-shadow:0 8px 20px rgba(229,9,20,.18)!important;cursor:pointer}
+#page-cardapio #products .productBottom button:hover,#page-produtos #manage .productBottom button:hover{transform:translateY(-1px);box-shadow:0 11px 25px rgba(229,9,20,.25)!important}
+#page-cardapio #products .productImage,#page-produtos #manage .productImage{min-height:115px;display:grid;place-items:center;background:linear-gradient(145deg,#20242b,#121419)!important;border-bottom:1px solid rgba(255,255,255,.06)}
+#page-cardapio #products .productImage span,#page-produtos #manage .productImage span{font-size:48px}
+@media(max-width:900px){#page-cardapio #products,#page-produtos #manage{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#page-cardapio #products,#page-produtos #manage{grid-template-columns:1fr}}
+#page-produtos .productFormPanel{display:none;margin-bottom:18px}
+#page-produtos .productFormPanel.show,#page-produtos .productFormPanel.open{display:block!important;visibility:visible!important;opacity:1!important}
+#page-produtos .productFormModal{max-width:760px;margin:0 auto;background:linear-gradient(145deg,#16191e,#0f1115);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+#page-produtos .productFormHero{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin:-18px -18px 18px;padding:18px;background:linear-gradient(145deg,#171a1f,#101216);border-bottom:1px solid rgba(255,255,255,.07);border-radius:16px 16px 0 0}
+#page-produtos .productFormHero small{color:#737b86;font-size:9px;font-weight:950;letter-spacing:1.7px}
+#page-produtos .productFormHero h3{margin:4px 0;font-size:20px;letter-spacing:-.2px}
+#page-produtos .productFormHero p{margin:0;color:#737b86;font-size:12px}
+#page-produtos .productClose{width:38px;height:38px;flex:none;border-radius:10px;border:1px solid #2e333b;background:#12151a;color:#fff;font-size:25px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#page-produtos .productClose:hover{background:rgba(229,9,20,.12);border-color:#e50914}#page-produtos .productClose{position:relative!important;z-index:9999!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-tap-highlight-color:rgba(229,9,20,.25)!important}
+#page-produtos .productForm{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#page-produtos .productForm label{display:flex;flex-direction:column;gap:7px;margin:0}
+#page-produtos .productForm label>span{font-size:11px;font-weight:900;letter-spacing:.4px;color:#aeb4bd}
+#page-produtos .productForm label:nth-child(1),#page-produtos .productForm label:nth-child(4){grid-column:1/-1}
+#page-produtos .productForm input,#page-produtos .productForm select,#page-produtos .productForm textarea{width:100%;box-sizing:border-box}
+#page-produtos .productForm textarea{min-height:100px;resize:vertical}
+#page-produtos .productForm .formSave{grid-column:1/-1;min-height:46px;margin-top:2px}
+@media(max-width:900px){#page-produtos #manage{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#page-produtos #manage{grid-template-columns:1fr}#page-produtos .productForm{grid-template-columns:1fr}#page-produtos .productForm label:nth-child(1),#page-produtos .productForm label:nth-child(4){grid-column:auto}#page-produtos .productFormModal{padding:15px}#page-produtos .productFormHero{margin:-15px -15px 15px;padding:16px}}
+/* Mobile — impedir zoom automático dos campos e manter escala fixa */
+@media (max-width: 600px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden;touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  input,select,textarea,button{font-size:16px!important;-webkit-text-size-adjust:100%;}
+  input,select,textarea{max-width:100%;}
+}
+#page-dashboard .dashboardDeliveredPanel{overflow:hidden}
+#page-dashboard .dashboardDeliveredHeader{align-items:flex-end;gap:18px;flex-wrap:wrap}
+#page-dashboard .dashboardDateFilter{display:flex;align-items:flex-end;gap:8px}
+#page-dashboard .dashboardDateFilter label{display:flex;flex-direction:column;gap:5px}
+#page-dashboard .dashboardDateFilter label span{font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#8f96a0}
+#page-dashboard .dashboardDateFilter input{height:40px;min-width:155px;padding:0 11px;border:1px solid #343a44;border-radius:10px;background:#080a0d;color:#fff;font-weight:800}
+#page-dashboard .dashboardDateFilter button{height:40px;padding:0 14px;border:1px solid #343a44;border-radius:10px;background:#20242a;color:#fff;font-weight:900;cursor:pointer}
+#page-dashboard .dashboardDateFilter button:hover{background:#e50914;border-color:#e50914}
+#page-dashboard .dashboardOrderLine{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:14px 0!important;border-bottom:1px solid rgba(255,255,255,.06)}
+#page-dashboard .dashboardOrderMain{display:flex;flex-direction:column;gap:4px;min-width:0}
+#page-dashboard .dashboardOrderMain b{font-size:14px;color:#fff;font-weight:900}
+#page-dashboard .dashboardOrderMain small{font-size:12px;color:#8f96a0}
+#page-dashboard .dashboardOrderDate{display:inline-flex;align-items:center;gap:4px;color:#b9bec6!important}
+#page-dashboard .dashboardOrderDate strong{color:#fff;font-weight:800}
+#page-dashboard .dashboardOrderValue{font-size:16px;color:#fff;white-space:nowrap}
+#page-dashboard .dashboardOrderDetailsBtn{min-height:38px;padding:0 13px;border:1px solid #343a44;border-radius:9px;background:#20242a;color:#fff;font-weight:900;cursor:pointer}
+#page-dashboard .dashboardOrderDetailsBtn:hover{background:#e50914;border-color:#e50914}
+#page-dashboard .analyticsPanel .panelTitle h3,#page-dashboard .dashboardDeliveredHeader h3{font-size:18px;font-weight:950;letter-spacing:-.2px}
+#page-dashboard .analyticsPanel .panelTitle small,#page-dashboard .dashboardDeliveredHeader small{font-size:12px}
+@media(max-width:600px){#page-dashboard .dashboardDateFilter{width:100%}#page-dashboard .dashboardDateFilter label{flex:1}#page-dashboard .dashboardDateFilter input{width:100%;min-width:0}#page-dashboard .dashboardOrderLine{grid-template-columns:1fr auto!important;gap:9px}#page-dashboard .dashboardOrderDetailsBtn{grid-column:1/-1;width:100%}}
+#page-config .permissionsPanel{margin-top:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#15181d,#0d0f12);box-shadow:0 16px 45px rgba(0,0,0,.25)}
+#page-config .managerHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+#page-config .managerHeader h3{margin:0;font-size:20px;font-weight:950;letter-spacing:-.3px}
+#page-config #userSearch{width:100%;height:44px;margin-bottom:14px;padding:0 14px;border:1px solid #343a44;border-radius:11px;background:#090b0e;color:#fff;font-size:15px}
+#page-config .userCreateBox{padding:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:#111419}
+#page-config .newUserGrid{display:grid;grid-template-columns:1.2fr 1.4fr 1fr .9fr auto;gap:9px}
+#page-config .newUserGrid input,#page-config .newUserGrid select{height:42px;padding:0 11px;border:1px solid #343a44;border-radius:9px;background:#090b0e;color:#fff}
+#page-config .newUserGrid button{height:42px;padding:0 15px;border:0;border-radius:9px;background:#e50914;color:#fff;font-weight:900;cursor:pointer}
+#page-config .userPerm{display:grid;grid-template-columns:minmax(0,1fr) 170px auto;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+#page-config .userPerm:last-child{border-bottom:0}
+#page-config .userPerm>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+#page-config .userPerm b{font-size:15px;color:#fff;font-weight:900}
+#page-config .userPerm small{font-size:12px;color:#8f96a0;overflow:hidden;text-overflow:ellipsis}
+#page-config .userPerm select{height:38px;padding:0 10px;border:1px solid #343a44;border-radius:9px;background:#20242a;color:#fff;font-weight:800}
+#page-config .userPerm button{height:38px;padding:0 13px;border:1px solid #4b2528;border-radius:9px;background:#241417;color:#ff6b72;font-weight:900;cursor:pointer}
+#page-config .userPerm button:hover{background:#e50914;color:#fff}
+@media(max-width:700px){#page-config .newUserGrid{grid-template-columns:1fr 1fr}.newUserGrid button{grid-column:1/-1}.userPerm{grid-template-columns:1fr!important}.userPerm select,.userPerm button{width:100%}}
+#page-config .permissionTitle{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:2px}
+#page-config .permissionTitle div{display:flex;flex-direction:column;gap:4px}
+#page-config .permissionTitle b{font-size:15px;color:#fff;font-weight:950}
+#page-config .permissionTitle small{font-size:11px;color:#8f96a0}
+#page-config .permissionTitle>span{font-size:10px;color:#e50914;font-weight:950;letter-spacing:1px}
+#page-config .userPerm{display:grid;grid-template-columns:minmax(0,1fr) 190px 80px;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+#page-config .userIdentity{display:flex;align-items:center;gap:11px;min-width:0}
+#page-config .userAvatar{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(145deg,#e50914,#7f050a);color:#fff;font-weight:950;box-shadow:0 6px 18px rgba(229,9,20,.2)}
+#page-config .userIdentity>div{display:flex;flex-direction:column;gap:3px;min-width:0}
+#page-config .userIdentity b{font-size:14px;color:#fff;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-config .userIdentity small{font-size:11px;color:#8f96a0}#page-config .userRoleText{font-size:10px;color:#e50914;font-weight:900;text-transform:uppercase;letter-spacing:.7px}
+#page-config .permissionField{display:flex;flex-direction:column;gap:4px}
+#page-config .permissionField label{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#777f89;font-weight:900}
+#page-config .permissionField select{width:100%;height:38px;padding:0 9px;border:1px solid #343a44;border-radius:9px;background:#20242a;color:#fff;font-weight:800}
+#page-config .userDelete{height:38px;opacity:1;border:1px solid #4b2528;border-radius:9px;background:#241417;color:#ff6b72;font-weight:900;cursor:pointer}
+#page-config .userDelete:hover{background:#e50914;color:#fff}
+#page-config .userLoading,#page-config .userError{padding:22px;text-align:center;border-radius:12px;background:#111419;color:#aeb4bd}
+@media(max-width:700px){#page-config .permissionTitle{align-items:flex-start}.permissionTitle>span{display:none}.userPerm{grid-template-columns:1fr!important;gap:10px}.permissionField,.userDelete{width:100%}}
+</style><link rel="stylesheet" href="bv-final-v1.css?v=20260926.1005"><link rel="stylesheet" href="bv-stability-v1.css?v=20260927.2330"><link rel="stylesheet" href="bv-premium-v1.css?v=20260926.1009"><link rel="stylesheet" href="bv-layout-v2.css?v=20260926.1005"><link rel="stylesheet" href="bv-performance-v1.css?v=20260926.1005"><link rel="stylesheet" href="bv-ultimate-v1.css?v=20260926.1005"><style>.motoFeeFilter{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.03)}.motoFeeQuickFilters{display:flex;gap:8px;flex-wrap:wrap}.motoFeeQuickFilters button{min-height:42px;padding:0 14px;border:1px solid #343a44;border-radius:10px;background:#20242a;color:#fff;font-weight:800;cursor:pointer}.motoFeeQuickFilters button.active{background:#e50914;border-color:#e50914}.motoFeeFilter label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:800}.motoFeeFilter input{min-height:42px;padding:0 12px;border-radius:10px;border:1px solid #343a44;background:#080a0d;color:#fff}.motoFeeFilter button{min-height:42px;padding:0 14px;border:1px solid #343a44;border-radius:10px;background:#20242a;color:#fff;font-weight:800;cursor:pointer}.motoFeeOrderNumber{display:flex;flex-direction:column;gap:3px}.motoFeeOrderNumber small:nth-of-type(2){margin-top:6px}</style><style>
+.dashboardDeliveredPanel{overflow:hidden}
+.dashboardDeliveredHeader{align-items:flex-end!important;gap:18px;flex-wrap:wrap}
+.dashboardDateFilter{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+.dashboardDateFilter label{display:flex;flex-direction:column;gap:6px}
+.dashboardDateFilter label span{font-size:10px;font-weight:900;letter-spacing:.8px;color:#8f96a0;text-transform:uppercase}
+.dashboardDateFilter input{height:40px;padding:0 11px;border:1px solid #343a44;border-radius:10px;background:#111419;color:#fff;font-weight:700}
+.dashboardDateFilter button{height:40px;padding:0 14px;border:1px solid #343a44;border-radius:10px;background:#20242a;color:#fff;font-weight:800;cursor:pointer}
+.dashboardDateFilter button:hover{border-color:#e50914;background:#291418}
+.dashboardOrderLine{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:14px 0!important}
+.dashboardOrderMain{display:flex;flex-direction:column;gap:5px;min-width:0}
+.dashboardOrderMain b{font-size:14px;font-weight:900;letter-spacing:.1px}
+.dashboardOrderMain small{color:#8f96a0;font-size:12px;line-height:1.4}
+.dashboardOrderDate{display:inline-flex;align-items:center;gap:6px;color:#bfc4cb!important;font-size:11px!important;font-weight:800}
+.dashboardOrderDate strong{color:#fff;font-size:11px}
+.dashboardOrderValue{font-size:15px;color:#fff;font-weight:950;white-space:nowrap}
+.dashboardOrderLine .dashboardOrderDetailsBtn{margin-left:0!important;padding:9px 12px;border:1px solid #343a44;border-radius:9px;background:#20242a;color:#fff;font-weight:800;cursor:pointer}
+.dashboardOrderLine .dashboardOrderDetailsBtn:hover{background:#2a2f37;border-color:#e50914}
+@media(max-width:600px){
+  .dashboardDeliveredHeader{align-items:stretch!important}
+  .dashboardDateFilter{width:100%}
+  .dashboardDateFilter label{flex:1}
+  .dashboardDateFilter input{width:100%;box-sizing:border-box}
+  .dashboardOrderLine{grid-template-columns:1fr auto!important;gap:8px}
+  .dashboardOrderLine .dashboardOrderValue{grid-column:2;grid-row:1}
+  .dashboardOrderLine .dashboardOrderDetailsBtn{grid-column:1/-1;width:100%}
+}
+<style>
+#page-promocoes .promoFormPanel{padding:0!important;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,#171a20,#0d0f13);box-shadow:0 20px 55px rgba(0,0,0,.28)}
+#page-promocoes .promotionForm{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;padding:22px}
+#page-promocoes .promotionForm>label{display:flex;flex-direction:column;gap:8px;margin:0}
+#page-promocoes .promotionForm>label:nth-child(1),#page-promocoes .promotionForm>.promoItemsField,#page-promocoes .promotionForm>label:nth-child(4){grid-column:1/-1}
+#page-promocoes .promotionForm label>span{font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.8px;color:#b9bec6}
+#page-promocoes .promotionForm input,#page-promocoes .promotionForm select,#page-promocoes .promotionForm textarea{width:100%;box-sizing:border-box;min-height:46px;padding:0 13px;border:1px solid #343a44;border-radius:11px;background:#080a0d;color:#fff;outline:none}
+#page-promocoes .promotionForm textarea{padding:12px;min-height:92px;resize:vertical}
+#page-promocoes .promotionForm input:focus,#page-promocoes .promotionForm select:focus,#page-promocoes .promotionForm textarea:focus{border-color:#e50914;box-shadow:0 0 0 3px rgba(229,9,20,.11)}
+#page-promocoes .promoItemsField{padding:15px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.025)}
+#page-promocoes #promoItems{display:flex;flex-direction:column;gap:9px}
+#page-promocoes .promoItemRow{display:grid;grid-template-columns:minmax(0,1fr) 120px 42px;gap:9px}
+#page-promocoes .promoItemQty{text-align:center}
+#page-promocoes .promoItemRow>button{height:46px;border:1px solid #4b2528;border-radius:11px;background:#241417;color:#ff6970;font-size:22px;font-weight:900;cursor:pointer}
+#page-promocoes .promoItemRow>button:hover{background:#e50914;color:#fff}
+#page-promocoes .addPromoItemBtn{margin-top:10px;min-height:42px;padding:0 14px;border:1px solid rgba(229,9,20,.45);border-radius:10px;background:rgba(229,9,20,.08);color:#ff7278;font-weight:900;cursor:pointer}
+#page-promocoes .addPromoItemBtn:hover{background:#e50914;color:#fff}
+#page-promocoes .promoItemsField>small{display:block;margin-top:9px;color:#737b86;font-size:11px}
+#page-promocoes .promotionForm .formSave{grid-column:1/-1;min-height:50px;border-radius:12px;font-size:14px;background:linear-gradient(135deg,#ff2530,#b90008);box-shadow:0 10px 25px rgba(229,9,20,.2)}
+#page-promocoes .promotionAdminCard{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+#page-promocoes .promotionAdminCard:last-child{border-bottom:0}
+#page-promocoes .promotionAdminCard h3{margin:8px 0 4px;font-size:17px}
+#page-promocoes .promotionAdminCard p{margin:0 0 7px;color:#8f96a0;font-size:12px}
+#page-promocoes .promoAdminPrice{display:flex;flex-direction:column;align-items:flex-end;gap:3px;white-space:nowrap}
+#page-promocoes .promoAdminPrice del{color:#737b86;font-size:12px}
+#page-promocoes .promoAdminPrice b{color:#ff4750;font-size:20px}
+#page-promocoes .promoActions{display:flex;gap:8px}
+#page-promocoes .promoActions button{min-height:38px;padding:0 12px;border:1px solid #343a44;border-radius:9px;background:#20242a;color:#fff;font-weight:850;cursor:pointer}
+#page-promocoes .promoActions button:hover{border-color:#e50914;background:#291418}
+.homePromoBanner{display:none;position:relative;margin:0 0 22px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.11);background:linear-gradient(115deg,#3b0508,#140b0d 55%,#2a1114);box-shadow:0 18px 45px rgba(0,0,0,.3)}
+.homePromoBanner.show{display:block}.homePromoTrack{display:flex;transition:transform .55s ease}.homePromoSlide{min-width:100%;box-sizing:border-box;padding:24px 26px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;position:relative}.homePromoSlide:before{content:"";position:absolute;inset:-40% auto auto 55%;width:280px;height:280px;border-radius:50%;background:rgba(229,9,20,.18);filter:blur(30px)}
+.homePromoKicker{font-size:10px;font-weight:950;letter-spacing:1.8px;color:#ff8a8f}.homePromoSlide h3{margin:5px 0;font-size:25px;font-weight:950}.homePromoSlide p{margin:0;color:#c5c9cf;font-size:13px}.homePromoItems{margin-top:8px;color:#fff;font-size:12px;font-weight:800}.homePromoPrice{position:relative;z-index:1;text-align:right;white-space:nowrap}.homePromoPrice del{display:block;color:#9a6e71;font-size:13px}.homePromoPrice strong{display:block;color:#fff;font-size:28px;font-weight:950}.homePromoPrice button{margin-top:8px;border:0;border-radius:10px;padding:10px 14px;background:#e50914;color:#fff;font-weight:900;cursor:pointer}.homePromoDots{display:flex;justify-content:center;gap:6px;padding:0 0 12px}.homePromoDots i{width:7px;height:7px;border-radius:50%;background:#5b2529}.homePromoDots i.active{width:20px;border-radius:8px;background:#e50914}
+@media(max-width:700px){#page-promocoes .promotionForm{grid-template-columns:1fr;padding:16px}#page-promocoes .promotionForm>label:nth-child(1),#page-promocoes .promotionForm>.promoItemsField,#page-promocoes .promotionForm>label:nth-child(4){grid-column:auto}#page-promocoes .promoItemRow{grid-template-columns:minmax(0,1fr) 82px 40px}#page-promocoes .promotionAdminCard{grid-template-columns:1fr;gap:11px}#page-promocoes .promoAdminPrice{align-items:flex-start}.promoActions button{flex:1}}
+@media(max-width:600px){.homePromoSlide{padding:20px;grid-template-columns:1fr}.homePromoSlide h3{font-size:21px}.homePromoPrice{text-align:left}.homePromoPrice strong{font-size:25px}}
+</style><style>
+#page-cardapio .menuCategoryTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+#page-cardapio .menuCategoryTabs button{min-height:42px;padding:0 15px;border:1px solid #343a44;border-radius:11px;background:#171a20;color:#cbd0d7;font-weight:900;cursor:pointer;transition:.18s ease}
+#page-cardapio .menuCategoryTabs button:hover{border-color:#e50914;color:#fff}
+#page-cardapio .menuCategoryTabs button.active{background:linear-gradient(135deg,#e50914,#9d0007);border-color:#e50914;color:#fff;box-shadow:0 8px 20px rgba(229,9,20,.2)}
+#page-cardapio .promotionCatalogCard{position:relative;overflow:hidden;border:1px solid rgba(229,9,20,.22)!important;background:linear-gradient(145deg,#1b1113,#0e1014)!important}
+#page-cardapio .promotionCatalogCard:before{content:"🔥 OFERTA";position:absolute;top:10px;left:10px;z-index:2;padding:5px 8px;border-radius:7px;background:#e50914;color:#fff;font-size:9px;font-weight:950;letter-spacing:.7px}
+#page-cardapio .promotionCatalogCard .promoCatalogBody{padding:15px;display:flex;flex-direction:column;gap:7px}
+#page-cardapio .promotionCatalogCard h3{margin:0;font-size:17px}
+#page-cardapio .promotionCatalogCard p{margin:0;color:#9da3ac;font-size:12px;line-height:1.5}
+#page-cardapio .promotionCatalogItems{color:#fff;font-size:12px;font-weight:850}
+#page-cardapio .promotionCatalogPrice{display:flex;align-items:baseline;gap:8px;margin-top:3px}
+#page-cardapio .promotionCatalogPrice del{color:#777f89;font-size:12px}
+#page-cardapio .promotionCatalogPrice strong{color:#ff4b53;font-size:21px;font-weight:950}
+#page-cardapio .promotionCatalogCard .promoCatalogButton{width:100%;min-height:42px;margin-top:5px;border:0;border-radius:10px;background:linear-gradient(135deg,#ff2530,#b90008);color:#fff;font-weight:950;cursor:pointer}
+</style></style><style>
+#page-promocoes .promoAiHint{grid-column:1/-1;display:block;margin-top:-6px;color:#9da4ae;font-size:12px;line-height:1.5}
+#page-promocoes .promoAiHint::first-letter{font-size:15px}
+#page-promocoes .promotionAdminCard{grid-template-columns:minmax(0,1fr) auto auto!important}
+#page-promocoes .promoAdminMain{display:flex;align-items:center;gap:14px;min-width:0}
+#page-promocoes .promoAdminThumb{width:112px;height:72px;flex:0 0 112px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:#0a0c0f}
+#page-promocoes .promoAdminThumbEmpty{display:grid;place-items:center;font-size:28px;color:#8b929c}
+#page-promocoes .promoActions{flex-wrap:wrap}
+.homePromoSlide{min-height:250px!important;background-color:#19080a;background-size:cover;background-position:center}
+.homePromoSlide .homePromoCopy{position:relative;z-index:2;max-width:68%;text-shadow:0 2px 12px rgba(0,0,0,.65)}
+.homePromoSlide .homePromoPrice{position:relative;z-index:2}
+.homePromoSlide:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 45%,rgba(229,9,20,.12),transparent 42%);pointer-events:none}
+@media(max-width:700px){#page-promocoes .promotionAdminCard{grid-template-columns:1fr!important}.promoAdminMain{align-items:flex-start!important}.promoAdminThumb{width:92px!important;height:64px!important;flex-basis:92px!important}.homePromoSlide{min-height:340px!important}.homePromoSlide .homePromoCopy{max-width:100%}.homePromoSlide .homePromoPrice{align-self:end}}
+</style><style>
+/* Tela inicial: somente o banner da promoção */
+#page-inicio{padding-top:0!important}
+#page-inicio .homeNotificationBar,
+#page-inicio .notificationCenter,
+#page-inicio .homeHero,
+#page-inicio .homeDots,
+#page-inicio .homeFeatureGrid,
+#page-inicio .howWorks,
+#page-inicio .homeFooter{display:none!important}
+#page-inicio #homePromoBanner{
+  display:none;
+  width:100%;
+  margin:0 0 18px;
+  border-radius:18px;
+  overflow:hidden;
+}
+#page-inicio #homePromoBanner.show{display:block}
+#page-inicio #homePromoBanner .homePromoTrack{width:100%}
+#page-inicio #homePromoBanner .homePromoSlide{
+  min-height:220px!important;
+  max-height:300px;
+  width:100%;
+  border-radius:18px;
+  overflow:hidden;
+  background-color:#090909!important;
+  background-size:cover!important;
+  background-position:center!important;
+}
+#page-inicio #homePromoBanner .homePromoCopy,
+#page-inicio #homePromoBanner .homePromoPrice,
+#page-inicio #homePromoBanner .homePromoDots{
+  display:flex!important;
+}
+#page-inicio #homePromoBanner .homePromoCopy{flex-direction:column}
+#page-inicio #homePromoBanner .homePromoSlide:after{display:none!important}
+@media(max-width:700px){
+  #page-inicio #homePromoBanner{margin-bottom:14px}
+  #page-inicio #homePromoBanner .homePromoSlide{
+    min-height:190px!important;
+    max-height:240px;
+    border-radius:14px;
+    background-position:center!important;
+  }
+}
+</style><link rel="stylesheet" href="bv-icon-styles-v1.css?v=20260926.1005" rel="stylesheet"><link rel="stylesheet" href="bv-icons-v1.css?v=20260926.1005">
+<link rel="stylesheet" href="bv-selection-v1.css?v=20260926.1005">
+<style id="bv-home-more-info">
+#page-inicio .homeInfoGrid button.homeInfoCard{font:inherit;text-align:left;color:inherit;cursor:pointer;width:100%;}.homeHighlightGrid button{font:inherit;text-align:left;color:inherit;cursor:pointer;border:0;}.homeInfoGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+#page-inicio .homeInfoCard{display:flex;align-items:center;gap:12px;min-height:92px;padding:16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:linear-gradient(145deg,rgba(27,30,36,.94),rgba(12,14,17,.94));box-shadow:0 12px 30px rgba(0,0,0,.22)}
+#page-inicio .homeInfoCard>span{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#e50914,#7d0509);box-shadow:0 8px 20px rgba(229,9,20,.2);font-size:22px}
+#page-inicio .homeInfoCard div{display:flex;flex-direction:column;gap:5px}
+#page-inicio .homeInfoCard b{font-size:13px;color:#fff;font-weight:900}
+#page-inicio .homeInfoCard small{font-size:11px;line-height:1.45;color:#8f96a0}
+#page-inicio .homeInfoCard small strong{color:#fff}
+#page-inicio .homeHighlights{margin:18px 0 4px;padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(145deg,#171a1f,#0d0f12);box-shadow:0 16px 40px rgba(0,0,0,.24)}
+#page-inicio .homeHighlightHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
+#page-inicio .homeHighlightHead div{display:flex;flex-direction:column;gap:4px}
+#page-inicio .homeHighlightHead small{font-size:9px;letter-spacing:1.5px;color:#e50914;font-weight:950}
+#page-inicio .homeHighlightHead b{font-size:18px;color:#fff;font-weight:950}
+#page-inicio .homeHighlightHead>span{font-size:10px;color:#65d38b;font-weight:900;letter-spacing:.8px}
+#page-inicio .homeHighlightGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#page-inicio .homeHighlightGrid>div{padding:15px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+#page-inicio .homeHighlightGrid strong{display:block;font-size:10px;color:#e50914;letter-spacing:1px;margin-bottom:7px}
+#page-inicio .homeHighlightGrid b{display:block;color:#fff;font-size:13px;margin-bottom:5px}
+#page-inicio .homeHighlightGrid small{display:block;color:#8f96a0;font-size:11px;line-height:1.45}
+@media(max-width:900px){#page-inicio .homeInfoGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){#page-inicio .homeInfoGrid{grid-template-columns:1fr;gap:9px}#page-inicio .homeInfoCard{min-height:76px;padding:13px}#page-inicio .homeHighlights{padding:15px}#page-inicio .homeHighlightHead{align-items:flex-start}#page-inicio .homeHighlightHead b{font-size:16px}#page-inicio .homeHighlightGrid{grid-template-columns:1fr;gap:8px}}
+</style><style id="bv-home-store-status-v1">#page-inicio .storeStatusHomeCard{cursor:default!important}#page-inicio .storeStatusHomeCard.open>span{background:linear-gradient(145deg,#16834b,#0b5630)!important;box-shadow:0 8px 20px rgba(22,131,75,.22)!important}#page-inicio .storeStatusHomeCard.closed>span{background:linear-gradient(145deg,#e50914,#7d0509)!important}#page-inicio .storeStatusHomeCard.open small{color:#65d38b!important;font-weight:900}#page-inicio .storeStatusHomeCard.closed small{color:#ff6870!important;font-weight:900}</style><link rel="stylesheet" href="bv-home-format-v1.css?v=20260926.1005"><style id="bv-home-format-final">
+#page-inicio .homeHighlightGrid>button{
+  appearance:none!important;-webkit-appearance:none!important;
+  display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;min-height:94px!important;
+  margin:0!important;padding:14px 15px!important;
+  border:1px solid rgba(255,255,255,.09)!important;border-radius:14px!important;
+  background:#15181d!important;background-image:linear-gradient(145deg,#1b1e24 0%,#0d0f12 100%)!important;
+  color:#fff!important;text-align:left!important;font:inherit!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.24)!important;
+}
+#page-inicio .homeHighlightGrid>button strong{
+  display:block!important;margin:0 0 7px!important;padding:0!important;
+  background:transparent!important;color:#e50914!important;
+  font-size:11px!important;line-height:1!important;font-weight:950!important;letter-spacing:1.5px!important;
+}
+#page-inicio .homeHighlightGrid>button b{
+  display:block!important;margin:0 0 6px!important;padding:0!important;
+  background:transparent!important;color:#fff!important;
+  font-size:16px!important;line-height:1.25!important;font-weight:950!important;
+}
+#page-inicio .homeHighlightGrid>button small{
+  display:block!important;margin:0!important;padding:0!important;
+  background:transparent!important;color:#9299a4!important;
+  font-size:11px!important;line-height:1.45!important;font-weight:600!important;
+}
+#page-inicio .homeHighlightGrid>button:hover,
+#page-inicio .homeHighlightGrid>button:active{
+  background:#1b1114!important;background-image:linear-gradient(145deg,#24151a 0%,#101216 100%)!important;
+  border-color:rgba(229,9,20,.5)!important;
+}
+@media(max-width:600px){
+  #page-inicio .homeHighlights{padding:15px!important;margin-top:18px!important}
+  #page-inicio .homeHighlightGrid{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  #page-inicio .homeHighlightGrid>button{min-height:96px!important;padding:14px!important;border-radius:13px!important}
+  #page-inicio .homeHighlightGrid>button b{font-size:15px!important}
+}
+</style><style id="bv-cart-fix-v1">
+.cartTop{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  width:43px!important;height:43px!important;
+  min-width:43px!important;
+  padding:0!important;
+  line-height:1!important;
+  overflow:visible!important;
+}
+.cartTop .bv-real-icon{
+  display:flex!important;
+  width:21px!important;height:21px!important;
+  min-width:21px!important;
+  margin:0!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+}
+.cartTop .bv-real-icon svg{
+  width:100%!important;height:100%!important;
+}
+.cartTop>b#count{
+  position:absolute!important;
+  top:-5px!important;
+  right:-5px!important;
+  z-index:5!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:18px!important;height:18px!important;
+  min-width:18px!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  border:2px solid #0d0f12!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  color:#e50914!important;
+  font:900 10px/1 Arial,sans-serif!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.35)!important;
+}
+@media(max-width:600px){
+  .cartTop{width:42px!important;height:42px!important;min-width:42px!important}
+  .cartTop .bv-real-icon{width:20px!important;height:20px!important}
+  .cartTop>b#count{top:-4px!important;right:-4px!important}
+}
+</style><style id="bv-logo-app-v1">.bvHomeLogo{display:block;width:min(280px,72vw);height:auto;margin:0 auto 10px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.38))}.homeHeroContent .homeScript{display:block}@media(max-width:600px){.bvHomeLogo{width:min(240px,78vw);margin-bottom:8px}}</style><style>
+.bvFlavorModal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);backdrop-filter:blur(5px)}
+.bvFlavorModal.show{display:flex}
+.bvFlavorBox{position:relative;width:min(390px,100%);padding:26px;border:1px solid rgba(229,9,20,.35);border-radius:18px;background:#15171c;box-shadow:0 20px 60px rgba(0,0,0,.5);color:#fff;text-align:center}
+.bvFlavorBox small{color:#ff4b53;font-weight:900;letter-spacing:1px}.bvFlavorBox h3{margin:7px 0 4px;font-size:24px}.bvFlavorBox p{color:#aeb4bd;margin:0 0 18px}.bvFlavorClose{position:absolute;right:12px;top:8px;border:0;background:none;color:#fff;font-size:28px;cursor:pointer}.bvFlavorOptions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.bvFlavorOptions button{min-height:52px;border:1px solid #3a3e46;border-radius:12px;background:#20232a;color:#fff;font-weight:900;font-size:15px;cursor:pointer}.bvFlavorOptions button:hover{border-color:#e50914;background:#2a1719}
+</style><style id="bv-hide-cart-all-v1">.cartTop,.floatingCart,.bv-floating-cart,#floatingCart,[class*="floatingCart"],[id*="floatingCart"]{display:none!important}</style><style id="bv-admin-change-v1">.adminChangeFor{margin-top:8px;padding:9px 11px;border-radius:10px;background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.22);font-size:12px;font-weight:800}.adminChangeFor strong{color:#ff5b64;font-size:14px}</style></head><body>
+<div id="login" class="overlay"><div class="login"><div class="logo">BV <i>LANCHES</i></div><small>ACESSE SUA CONTA</small><h1>Entrar</h1><input id="email" type="email" placeholder="E-mail"><input id="pass" type="password" placeholder="Senha"><button onclick="login()">Entrar</button><button type="button" class="registerLoginBtn" onclick="openRegister()">＋ Criar minha conta</button><p id="err"></p><button type="button" class="registerLoginBtn" onclick="resetBVPassword()">Esqueci minha senha</button></div></div>
+<div id="registerModal" aria-hidden="true"><div class="registerBackdrop" onclick="closeRegister()"></div><div class="registerCard"><div class="productFormHero"><div><small>CADASTRO DE CLIENTE</small><h3>Criar minha conta</h3><p>Cadastre seus dados para fazer pedidos.</p></div><button type="button" class="productClose" onclick="closeRegister()">×</button></div><form class="productForm" onsubmit="registerUser(event)"><label><span>Nome</span><input id="registerName" required placeholder="Seu nome"></label><label><span>E-mail</span><input id="registerEmail" type="email" required placeholder="seu@email.com"></label><label><span>Senha</span><input id="registerPass" type="password" minlength="6" required placeholder="Mínimo de 6 caracteres"></label><label><span>Confirmar senha</span><input id="registerPass2" type="password" minlength="6" required placeholder="Digite novamente"></label><p id="registerErr" class="registerErr"></p><div class="productFormActions"><button type="button" class="formCancel" onclick="closeRegister()">Cancelar</button><button type="submit" class="formSave">✓ Criar conta</button></div></form></div></div>
+<div id="appRoot"><aside id="sidebar" class="sidebar"><div class="sideBrand"><div class="logo">BV <i>LANCHES</i></div><button class="closeSide" onclick="toggleSidebar()">×</button></div><div class="sideUser"><div class="avatar">BV</div><div><b>BRASABOX</b><small>Sistema de pedidos</small></div></div><nav class="sideNav"><button data-page="inicio" onclick="showPage('inicio')">⌂ &nbsp;Início</button><button data-page="cardapio" onclick="showPage('cardapio')">🍔 &nbsp;Cardápio</button><button class="adminHide" data-page="pedido" onclick="showPage('pedido')">🛒 &nbsp;Meu pedido <b id="sideCount">0</b></button><button class="adminHide" data-page="acompanhar" onclick="showPage('acompanhar')">🔎 &nbsp;Acompanhar pedido</button><button data-role="motoboyOnly" data-page="pedidos" onclick="openMotoPage('pedidos')" style="display:none">🏍️ &nbsp;Pedidos</button><button data-role="motoboyOnly" data-page="taxa-entrega" onclick="openMotoPage('taxa-entrega')" style="display:none">💰 &nbsp;Taxa de entrega</button><button class="adminOnly adminDeliveryFeeLink" data-page="taxa-entrega" onclick="openAdmin('taxa-entrega')">💰 &nbsp;Taxa de entrega</button><div class="navTitle adminOnly">ADMINISTRAÇÃO</div><button class="adminOnly" data-page="dashboard" onclick="openAdmin('dashboard')">▦ &nbsp;Dashboard</button><button class="adminOnly" data-page="pedidos" onclick="openAdmin('pedidos')">📋 &nbsp;Pedidos <b id="sideNew">0</b></button><button class="adminOnly" data-page="produtos" onclick="openAdmin('produtos')">📦 &nbsp;Produtos</button><button class="adminOnly" data-page="promocoes" onclick="openAdmin('promocoes')">🏷️ &nbsp;Promoções</button><button class="adminOnly" data-page="cupons" onclick="openAdmin('cupons')">🎟 &nbsp;Cupons</button><button class="adminOnly" data-page="config" onclick="openAdmin('config')">⚙ &nbsp;Configurações</button></nav><div class="sideBottom"><button class="adminBtn adminOnly" onclick="openAdmin('dashboard')">🔐 Painel administrativo</button><button class="logoutBtn" onclick="logout()">↪ Sair da conta</button></div></aside><div class="app"><header class="topbar"><button class="menuBtn" onclick="toggleSidebar()">☰</button><div><div class="pageKicker">BRASABOX</div><h1 id="pageTitle">Início</h1></div><div class="topActions"><button class="cartTop" type="button" onclick="showPage('pedido')" aria-label="Abrir carrinho" title="Abrir carrinho">🛒 <b id="count">0</b></button><button id="bvInstallAppBtn" type="button" onclick="bvInstallApp()" aria-label="Instalar BrasaBox" title="Instalar BrasaBox" style="display:none;align-items:center;gap:7px;min-height:40px;padding:0 12px;border:1px solid #e50914;border-radius:10px;background:linear-gradient(135deg,#e50914,#8d0007);color:#fff;font-weight:900;cursor:pointer">＋ Instalar app</button><button id="bvUpdateAppBtn" type="button" onclick="bvUpdateApp()" aria-label="Atualizar BrasaBox" title="Nova atualização disponível" style="display:none;align-items:center;gap:7px;min-height:40px;padding:0 12px;border:1px solid #ffd400;border-radius:10px;background:linear-gradient(135deg,#ffd400,#d69b00);color:#111;font-weight:900;cursor:pointer">↻ Atualizar</button><span class="adminState">Loja aberta</span><span id="loggedUserName" class="loggedUserName"></span></div></header><main class="content">
+<section id="page-inicio" class="page activePage"><div class="homeNotificationBar adminOnly"><button class="notifyBtn" type="button" onclick="toggleNotifications()">🔔 <span id="homeNotificationBadge">0</span><b>Notificações</b></button></div><div id="notificationCenter" class="notificationCenter"></div><div id="homePromoBanner" class="homePromoBanner" aria-label="Promoções ativas"><div id="homePromoTrack" class="homePromoTrack"></div><div id="homePromoDots" class="homePromoDots"></div></div><div class="homeHero"><div class="homeHeroGlow"></div><div class="homeHeroFood">🍔</div><div class="homeHeroContent"><img class="bvHomeLogo" src="./bv-logo.png?v=20260926.1005" alt="BrasaBox"><span class="homeScript">BEM-VINDO AO</span><h2><strong>BV</strong> <i>LANCHES</i></h2><p>Sabor, qualidade e praticidade<br>no seu dia a dia!</p><div class="homeHeroActions"><button onclick="showPage('cardapio')">🍴 &nbsp;Ver cardápio</button><button class="outline" onclick="showPage('pedido')">🏍️ &nbsp;Fazer pedido</button></div></div><div class="homeScribble">♛<br><span>Lanche bom<br>é aqui!</span></div></div><div class="homeDots"><b></b><i></i><i></i></div><div class="homeFeatureGrid"><button class="homeFeature" onclick="showPage('cardapio')"><span>🍔</span><b>Lanches</b><small>Os melhores lanches<br>da cidade!</small><em>Ver cardápio&nbsp; →</em></button><button class="homeFeature" onclick="showPage('cardapio')"><span>🥤</span><b>Bebidas</b><small>Refresque seu<br>momento!</small><em>Ver cardápio&nbsp; →</em></button><button class="homeFeature" onclick="showPage('cardapio')"><span>🏍️</span><b>Entrega rápida</b><small>Seu pedido no conforto<br>da sua casa!</small><em>Ver taxas&nbsp; →</em></button><button class="homeFeature" onclick="showPage('pedido')"><span>🛡️</span><b>Pagamento seguro</b><small>Diversas formas<br>de pagamento.</small><em>Saiba mais&nbsp; →</em></button></div><div class="howWorks"><div class="howTitle"><i></i><b>Como funciona?</b><i></i></div><div class="howGrid"><div><strong>1</strong><span>🍔</span><b>Escolha seu lanche</b><small>Veja nosso cardápio completo<br>e faça seu pedido.</small></div><div><strong>2</strong><span>📋</span><b>Confirme o pedido</b><small>Revise os itens e finalize<br>com segurança.</small></div><div><strong>3</strong><span>🏍️</span><b>Acompanhe a entrega</b><small>Fique por dentro do status<br>do seu pedido.</small></div><div><strong>4</strong><span>😊</span><b>Receba e aproveite</b><small>Seu lanche chega quentinho<br>e no prazo!</small></div></div></div><div class="homeInfoGrid">
+  <button type="button" class="homeInfoCard storeStatusHomeCard" aria-label="Status da loja"><span id="homeStoreStatusIcon">🟢</span><div><b>Status da loja</b><small id="homeStoreStatusText">Verificando...</small></div></button>  <button type="button" class="homeInfoCard adminHide" onclick="showPage('inicio')" aria-label="Horário de atendimento"><span>🕒</span><div><b>Horário de atendimento</b><small>Todos os dias<br><strong>18:00 às 23:00</strong></small></div></button>
+  <button type="button" class="homeInfoCard" onclick="showPage('taxa-entrega')" aria-label="Consultar taxa de entrega"><span>🚚</span><div><b>Entrega</b><small>Consulte a taxa do seu bairro<br>e receba no conforto de casa.</small></div></button>
+  <button type="button" class="homeInfoCard" onclick="showPage('pedido')" aria-label="Ver formas de pagamento"><span>💳</span><div><b>Formas de pagamento</b><small>Pix, cartão e dinheiro<br>com praticidade.</small></div></button>
+  <button type="button" class="homeInfoCard" onclick="showPage('acompanhar')" aria-label="Acompanhar pedido"><span>📦</span><div><b>Acompanhe seu pedido</b><small>Veja o status do pedido<br>até a entrega.</small></div></button>
+</div>
+<div class="homeHighlights">
+  <div class="homeHighlightHead"><div><small>BRASABOX</small><b>Feito para facilitar seu pedido</b></div><span>● ONLINE</span></div>
+  <div class="homeHighlightGrid">
+    <button type="button" onclick="showPage('cardapio')" aria-label="Abrir cardápio"><strong>01</strong><b>Cardápio completo</b><small>Escolha lanches, bebidas e promoções em poucos toques.</small></button>
+    <button type="button" onclick="showPage('pedido')" aria-label="Fazer pedido"><strong>02</strong><b>Pedido simples</b><small>Monte seu pedido, informe a entrega e finalize com segurança.</small></button>
+    <button type="button" onclick="showPage('acompanhar')" aria-label="Acompanhar pedido"><strong>03</strong><b>Acompanhamento</b><small>Consulte o número do pedido e acompanhe cada etapa.</small></button>
+  </div>
+</div><div class="homeFooter"><b>🍔 &nbsp;BrasaBox</b><span>Sempre com você! ♡</span><strong class="adminHide">◷ &nbsp; Aberto agora <small>18:00 às 23:00</small></strong></div></section>
+<section id="page-cardapio" class="page"><div class="sectionTitle"><div><small class="eyebrow">LOJA</small><h2>Cardápio</h2></div><span class="pill green">ABERTO</span></div><div class="menuCategoryTabs"><button type="button" class="active" data-menu-category="Lanches" onclick="setMenuCategory('Lanches',this)">🍔 Lanches</button><button type="button" data-menu-category="Bebidas" onclick="setMenuCategory('Bebidas',this)">🥤 Bebidas</button><button type="button" data-menu-category="Adicionais" onclick="setMenuCategory('Adicionais',this)">＋ Adicionais</button><button type="button" data-menu-category="Promocoes" onclick="setMenuCategory('Promocoes',this)">🏷️ Promoções</button></div><div id="products" class="grid"></div></section>
+<section id="page-pedido" class="page"><div class="sectionTitle"><div><small class="eyebrow">CHECKOUT</small><h2>Meu pedido</h2></div></div><div class="checkout"><div class="panel"><h3>Itens do pedido</h3><div id="cart"></div><div class="line"><span>Subtotal</span><b id="sub">R$ 0,00</b></div><div class="line"><span>Entrega</span><b id="fee">R$ 0,00</b></div><div class="line total"><span>Total</span><b id="total">R$ 0,00</b></div></div><div class="panel"><h3>Entrega e pagamento</h3><div class="tabs"><button class="active" onclick="mode('entrega',this)">🚚 Entrega</button><button onclick="mode('retirada',this)">🏪 Retirada</button></div><div id="address"><input id="name" placeholder="Nome"><input id="phone" placeholder="WhatsApp"><div class="two"><input id="street" placeholder="Rua"><input id="num" placeholder="Nº"></div><div class="two"><input id="bairro" placeholder="Bairro" autocomplete="address-level2" oninput="refreshNeighborhoodFee()" onchange="refreshNeighborhoodFee()"><input id="cep" placeholder="CEP"></div><input id="comp" placeholder="Complemento / referência"></div><h3>Pagamento</h3><div class="pay"><button class="active" onclick="pay('Pix',this)">🔷 Pix</button><button onclick="pay('Dinheiro',this)">💵 Dinheiro</button><button onclick="pay('Cartão',this)">💳 Cartão</button></div><input id="troco" class="hide" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Troco para: R$ 0,00"><input id="coupon" placeholder="Cupom de desconto"><button class="whats" onclick="finish()">✅ Finalizar pedido</button></div></div></section>
+<section id="page-acompanhar" class="page"><div class="sectionTitle"><div><small class="eyebrow">MEU PEDIDO</small><h2>Acompanhar pedido</h2><p class="muted">Acompanhe o status do seu pedido em tempo real.</p></div></div><div class="trackingGrid"><div class="panel trackingLookup"><div class="trackingLookupHead"><div class="trackingIcon">📦</div><div><h3>Consultar pedido</h3><small class="muted">Digite o número do pedido para acompanhar.</small></div></div><label>Número do pedido<input id="trackId" inputmode="numeric" placeholder="Ex.: 001"></label><label>WhatsApp <span class="optionalLabel">opcional</span><input id="trackPhone" inputmode="tel" placeholder="Ex.: (31) 99999-9999"></label><button class="trackBtn" type="button" onclick="trackOrder()">🔎 Consultar status</button><button class="trackLast" type="button" onclick="trackLastOrder()">📦 Ver meu último pedido</button><div class="trackingHint">💡 Se você estiver logado, seus pedidos são consultados automaticamente.</div></div><div id="trackingResult" class="panel trackingResult"><div class="trackingEmpty"><span>📦</span><h3>Nenhum pedido selecionado</h3><p>Informe um pedido ou veja seu último pedido para acompanhar o status.</p></div></div></div></section>
+<section id="page-dashboard" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Dashboard</h2><p>Visão geral dos pedidos e desempenho.</p></div><div class="adminTopActions"><button onclick="logout()">Sair</button></div></div><div class="stats"><div><small>Pedidos entregues</small><b id="sOrders">0</b></div><div><small>Faturamento entregue</small><b id="sRevenue">R$ 0,00</b></div><div><small>Ticket médio</small><b id="sAvg">R$ 0,00</b></div><div><small>Pedidos pendentes</small><b id="sNew">0</b></div></div><div class="panel analyticsPanel"><div class="panelTitle"><div><h3>Desempenho</h3><small class="muted">Distribuição dos pedidos por status</small></div><span class="liveDot">● Atualizado automaticamente</span></div><div id="dashboardChart" class="dashboardChart"></div></div><div class="panel dashboardDeliveredPanel"><div class="panelTitle dashboardDeliveredHeader"><div><h3>Pedidos entregues</h3><small class="muted">Consulte os pedidos por período</small></div><div class="dashboardDateFilter"><label><span>Filtrar por data</span><input id="dashboardDateFilter" type="date" onchange="setDashboardDateFilter(this.value)"></label><button type="button" onclick="setDashboardDateFilter('')">Todos</button></div></div><div id="dashboardOrders"></div></div></section>
+<section id="page-taxa-entrega" class="page"><div class="sectionTitle"><div><small class="eyebrow" id="deliveryFeeEyebrow">ENTREGA</small><h2>Taxas de entrega</h2><p id="deliveryFeeDescription" class="muted">Consulte todas as taxas de entrega por bairro.</p></div></div><div class="panel"><div id="motoFeeOrders"></div><div id="publicDeliveryFees"></div></div></section>
+<section id="page-pedidos" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Pedidos</h2><p>Atualize o status dos pedidos.</p></div></div><div id="adminOrderFilters" class="panel smartFilters"><div class="filterHeader"><div><b>Filtros inteligentes</b><small class="muted">Pesquise por cliente, pedido, telefone ou endereço.</small></div><button class="filterClear" onclick="clearOrderFilters()">Limpar</button></div><div class="filterGrid"><input id="orderSearch" type="search" placeholder="🔎 Cliente, pedido, telefone..."><select id="orderStatusFilter"><option value="">Todos os status</option><option value="recebido">Novo</option><option value="em_preparo">Em preparo</option><option value="em_producao">Pronto</option><option value="saiu_entrega">Saiu para entrega</option><option value="cancelado">Cancelado</option></select><select id="orderPaymentFilter"><option value="">Todos os pagamentos</option><option>Pix</option><option>Cartão</option><option>Dinheiro</option></select><select id="orderDateFilter"><option value="">Qualquer data</option><option value="today">Hoje</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option></select></div></div><div id="motoDeliveryPanel" class="panel" style="display:none"><div class="panelTitle"><div><h3>Minhas entregas</h3><small class="muted">Pedidos atribuídos ao motoboy.</small></div></div><div id="motoDeliverySummary"></div></div><div class="panel"><div id="orders"></div></div></section>
+<section id="page-produtos" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Produtos</h2><p>Gerencie o cardápio.</p></div><button type="button" onclick="(function(){const p=document.getElementById('productFormPanel');if(!p)return; p.classList.add('show','open');p.style.setProperty('display','block','important');p.style.setProperty('visibility','visible','important');p.style.setProperty('opacity','1','important');p.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){const n=document.getElementById('productName');if(n)n.focus()},250)})()">＋ Novo produto</button></div><div class="panel"><div id="productFormPanel" class="productFormPanel"><div class="productFormModal"><div class="productFormHero"><div><small>CADASTRO DE PRODUTO</small><h3>Novo produto</h3><p>Preencha os dados do produto para adicionar ao cardápio.</p></div><button type="button" id="closeProductFormBtn" class="productClose" onclick="event.preventDefault();event.stopPropagation();if(window.BV_CLOSE_PRODUCT_FORM){window.BV_CLOSE_PRODUCT_FORM()}else{const p=document.getElementById('productFormPanel');if(p){p.classList.remove('show','open');p.style.setProperty('display','none','important')}}" aria-label="Fechar cadastro" title="Fechar cadastro">×</button></div><form class="productForm" onsubmit="addProduct(event)"><label><span>Nome do produto</span><input id="productName" required></label><label><span>Valor</span><input id="productPrice" type="number" step="0.01" min="0" required></label><label><span>Categoria</span><select id="productCategory" required><option>Lanches</option><option>Bebidas</option><option>Adicionais</option></select></label><label><span>Descrição</span><textarea id="productDesc" rows="4"></textarea></label><button class="formSave">✓ Cadastrar produto</button></form></div></div><div id="manage"></div></div></section>
+<section id="page-promocoes" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Promoções</h2><p>Crie ofertas com preço especial para aparecerem automaticamente no cardápio.</p></div></div><div class="panel promoFormPanel"><form class="promotionForm" onsubmit="addPromotion(event)"><label><span>Nome da promoção</span><input id="promoName" required placeholder="Ex.: Combo X-Bacon"></label><label class="promoItemsField"><span>Itens da promoção</span><div id="promoItems"></div><button type="button" class="addPromoItemBtn" onclick="addPromoItemRow()">＋ Adicionar outro item</button><small>Você pode repetir o mesmo produto e definir a quantidade desejada.</small></label><label><span>Preço promocional do conjunto</span><input id="promoPrice" type="number" step="0.01" min="0" required placeholder="Ex.: 29,90"></label><label><span>Descrição</span><textarea id="promoDesc" rows="3" placeholder="Ex.: Oferta especial desta semana"></textarea></label><label><span>Início</span><input id="promoStart" type="datetime-local"></label><label><span>Fim</span><input id="promoEnd" type="datetime-local"></label><button class="formSave" type="submit">✓ Cadastrar promoção</button><small class="promoAiHint">🖼️ Ao cadastrar, o site cria automaticamente um banner grátis com todos os itens juntos e coloca essa imagem na tela inicial.</small></form></div><div class="panel"><div class="panelTitle"><div><h3>Promoções cadastradas</h3><small>Ative ou desative quando quiser.</small></div></div><div id="promotionsManage"></div></div></section><section id="page-cupons" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Cupons</h2></div></div><div class="couponGrid"><div class="couponCard"><span>10%</span><b>BV10</b><p>10% de desconto.</p></div><div class="couponCard"><span>R$ 5</span><b>PRIMEIRA</b><p>R$ 5 de desconto.</p></div></div></section>
+<section id="page-config" class="page adminPage"><div class="adminTop"><div><small class="eyebrow">ADMINISTRAÇÃO</small><h2>Configurações</h2></div></div><div class="panel settingsPanel"><label>Taxa padrão de entrega<input id="feeCfg" type="number" step="0.01" min="0" value="5"></label><label>WhatsApp<input id="waCfg"></label><div id="storeStatusControl" class="storeStatusControl"><div><small>STATUS DA LOJA</small><b id="storeStatusLabel">Carregando...</b></div><button type="button" id="storeStatusBtn" onclick="toggleStoreStatus()">Carregando...</button></div><h3>Taxa por bairro</h3><div class="two"><input id="bairroCfg" placeholder="Bairro"><input id="bairroFeeCfg" type="number" step="0.01" placeholder="Taxa"></div><button onclick="addBairroFee()">+ Adicionar bairro</button><div id="bairroFees"></div><button onclick="saveCfg()">Salvar configurações</button></div><div class="panel permissionsPanel"><div class="managerHeader"><div><h3>Usuários e contas</h3></div><span id="userCount" class="pill">0 usuários</span></div><input id="userSearch" type="search" oninput="renderUsers()" placeholder="Buscar..."><div id="userPermissions"></div></div></section>
+</main></div></div><div id="toast"></div>
+<script>
+window.renderDeliveryFees=async function(){
+  const box=document.getElementById('publicDeliveryFees');
+  if(!box)return;
+  const money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  box.innerHTML='<div class="publicFeeHead"><div><small>ENTREGA BRASABOX</small><b>Taxas por bairro</b></div></div><div class="publicFeeGrid"><div class="publicFeeEmpty">⏳ Carregando taxas...</div></div>';
+  try{
+    const sb=window.BV_SUPABASE||window.sb;
+    if(!sb)throw new Error('Banco de dados indisponível.');
+    const r=await sb.from('neighborhood_fees').select('name,fee,active').eq('active',true).order('name',{ascending:true});
+    if(r.error)throw r.error;
+    const entries=(r.data||[]).filter(x=>String(x.name||'').trim()&&Number.isFinite(Number(x.fee)));
+    box.innerHTML='<div class="publicFeeHead"><div><small>ENTREGA BRASABOX</small><b>Taxas por bairro</b></div><span>'+entries.length+' bairro'+(entries.length===1?'':'s')+'</span></div><div class="publicFeeGrid">'+
+      (entries.length?entries.map(x=>'<div class="publicFeeCard"><span>📍</span><div><b>'+esc(x.name)+'</b></div><strong>'+money(x.fee)+'</strong></div>').join(''):'<div class="publicFeeEmpty">Nenhuma taxa por bairro cadastrada.</div>')+
+      '</div>';
+  }catch(e){
+    console.error('[BV PUBLIC DELIVERY FEES]',e);
+    box.innerHTML='<div class="publicFeeEmpty">Não foi possível carregar as taxas por bairro.</div>';
+  }
+};</script>
+<style>
+#page-taxa-entrega .publicFeeHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding:2px 0 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+#page-taxa-entrega .publicFeeHead div{display:flex;flex-direction:column;gap:4px}
+#page-taxa-entrega .publicFeeHead small{font-size:9px;letter-spacing:1.3px;color:#e50914;font-weight:950}
+#page-taxa-entrega .publicFeeHead b{font-size:18px;color:#fff;font-weight:950}
+#page-taxa-entrega .publicFeeHead>span{font-size:11px;color:#8f96a0;font-weight:800}
+#page-taxa-entrega .publicFeeGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#page-taxa-entrega .publicFeeCard{display:flex;align-items:center;gap:11px;min-height:70px;padding:12px 13px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:linear-gradient(145deg,#171a1f,#0d0f12)}
+#page-taxa-entrega .publicFeeCard>span{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:10px;background:rgba(229,9,20,.12);font-size:18px}
+#page-taxa-entrega .publicFeeCard>div{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+#page-taxa-entrega .publicFeeCard b{font-size:14px;color:#fff;font-weight:900;text-transform:capitalize}
+#page-taxa-entrega .publicFeeCard small{font-size:10px;color:#8f96a0}
+#page-taxa-entrega .publicFeeCard strong{font-size:15px;color:#fff;font-weight:950;white-space:nowrap}
+#page-taxa-entrega .publicFeeDefault{display:flex;align-items:center;gap:11px;margin-top:12px;padding:13px;border:1px solid rgba(229,9,20,.18);border-radius:13px;background:rgba(229,9,20,.06)}
+#page-taxa-entrega .publicFeeDefault>span{font-size:20px}
+#page-taxa-entrega .publicFeeDefault div{display:flex;flex-direction:column;gap:3px;flex:1}
+#page-taxa-entrega .publicFeeDefault b{font-size:13px;color:#fff}
+#page-taxa-entrega .publicFeeDefault small{font-size:10px;color:#8f96a0}
+#page-taxa-entrega .publicFeeDefault strong{font-size:15px;color:#fff;white-space:nowrap}
+#page-taxa-entrega .publicFeeEmpty{grid-column:1/-1;padding:25px;text-align:center;color:#8f96a0;border:1px dashed rgba(255,255,255,.1);border-radius:13px}
+@media(max-width:600px){#page-taxa-entrega .publicFeeGrid{grid-template-columns:1fr}#page-taxa-entrega .publicFeeCard{min-height:66px}}
+</style>
+<script>window.BV_SITE_VERSION='2026.09.26.1011';try{if(window.caches&&caches.keys)caches.keys().then(keys=>keys.filter(k=>!String(k).includes('brasabox-pwa-v4')).forEach(k=>caches.delete(k))).catch(()=>{})}catch(e){}</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js?v=20260926.1005"></script><script src="bv-auth-v2.js?v=20260927.2355"></script><script src="bv-register-v1.js?v=20260926.1005"></script><script src="bv-stability-v1.js?v=20260927.3000"></script><script src="bv-order-v2.js?v=20260926.1600"></script><script src="bv-updates-v1.js?v=20260926.1600"></script><script src="bv-icons-v1.js?v=20260926.1005"></script><script src="bv-icon-styles-v1.js?v=20260926.1005"></script><link rel="stylesheet" href="bv-home-mobile-fix-v1.css?v=20260926.1005">
+<script src="bv-pwa-v1.js?v=20260927.2600"></script><script src="bv-ultimate-v1.js?v=20260926.1005"></script><script src="bv-motoboy-v3.js?v=20260927.2500"></script><script src="bv-admin-notify-v1.js?v=20260927.2010"></script><script src="bv-admin-fees-fix-v1.js?v=20260926.1005"></script><script src="bv-realtime-orders-v1.js?v=20260926.1005"></script><script src="bv-cleanup-v1.js?v=20260926.1005"></script><script src="bv-promotions-dedupe-v1.js?v=20260927.2800"></script><script src="bv-refri-flavors-v1.js?v=20260926.1600"></script>
+<script>
+/* BV — imagens definitivas dos cards de bebidas */
+(function(){
+  const BV_DRINK_IMAGES = {
+    'coca cola 2 litros':'https://upload.wikimedia.org/wikipedia/commons/3/32/Une_bouteille_de_Coca-Cola_2_Litres.JPG',
+    'coca-cola 2 litros':'https://upload.wikimedia.org/wikipedia/commons/3/32/Une_bouteille_de_Coca-Cola_2_Litres.JPG',
+    'coca cola 2l':'https://upload.wikimedia.org/wikipedia/commons/3/32/Une_bouteille_de_Coca-Cola_2_Litres.JPG',
+    'coca-cola 2l':'https://upload.wikimedia.org/wikipedia/commons/3/32/Une_bouteille_de_Coca-Cola_2_Litres.JPG',
+    'refri 2l':'assets/refri-2l-sem-marca.svg',
+    'refri 2 litros':'assets/refri-2l-sem-marca.svg',
+    'coca':'https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=900&q=85',
+    'coca cola':'https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=900&q=85',
+    'pepsi':'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=900&q=85',
+    'guarana':'https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=900&q=85',
+    'guarana antarctica':'https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=900&q=85',
+    'laranja':'https://images.unsplash.com/photo-1625772299848-391b6a9f7b4d?auto=format&fit=crop&w=900&q=85',
+    'fanta':'https://images.unsplash.com/photo-1625772299848-391b6a9f7b4d?auto=format&fit=crop&w=900&q=85',
+    'refri mini':'https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=900&q=85'
+  };
+  const norm=s=>String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+  function drinkImage(name){
+    const n=norm(name);
+    if(/^coca\s*-?\s*cola\s*2\s*(l|litros?)$/.test(n))return BV_DRINK_IMAGES['coca cola 2l'];
+    if(/^refri\s*2\s*(l|litros?)$/.test(n))return BV_DRINK_IMAGES['refri 2l'];
+    if(BV_DRINK_IMAGES[n])return BV_DRINK_IMAGES[n];
+    return '';
+  }
+  function applyDrinkImages(root){
+    const scope=root||document;
+    scope.querySelectorAll('#products .productCard, #products .product, #manage .productCard, #manage .manageProduct, #manage .adminProductCard').forEach(card=>{
+      const name=card.querySelector('h3')?.textContent||'';
+      const src=drinkImage(name);
+      if(!src)return;
+      let box=card.querySelector('.bvDrinkImage');
+      if(!box){
+        box=document.createElement('div');
+        box.className='bvDrinkImage';
+        const old=card.querySelector('.photo,.productImage');
+        if(old)old.replaceWith(box);else card.insertBefore(box,card.firstChild);
+      }
+      if(/^refri\\s*2\\s*(l|litros?)$/.test(norm(name))){
+        const guarana='https://images.prismic.io/prod-funada/658be343531ac2845a26f183_Funada-Guarana_2L.webp?auto=format%2Ccompress&fit=max&w=640';
+        const laranja='https://images.prismic.io/prod-funada/658be55b531ac2845a26f18d_Funada-Laranja_2L.webp?auto=format%2Ccompress&fit=max&w=640';
+        box.innerHTML='<div class="bvIllustrativeLabel">Imagem ilustrativa</div><div class="bvDrinkPair"><div><img loading="eager" decoding="async" src="'+guarana+'" alt="Refrigerante Guaraná 2 litros"><span>Guaraná</span></div><div><img loading="eager" decoding="async" src="'+laranja+'" alt="Refrigerante Laranja 2 litros"><span>Laranja</span></div></div>';
+      }else{
+        box.innerHTML='<div class="bvIllustrativeLabel">Imagem ilustrativa</div><img loading="eager" decoding="async" src="'+src+'" alt="'+String(name).replace(/"/g,'&quot;')+'">';
+      }
+    });
+  }
+  const style=document.createElement('style');
+  style.textContent='.bvDrinkImage{width:100%;height:170px;overflow:hidden;background:linear-gradient(145deg,#20242b,#0d0f12);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;position:relative}.bvDrinkImage img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .25s ease}.bvDrinkPair{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:10px 6px 4px;box-sizing:border-box}.bvDrinkPair>div{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.bvDrinkPair img{height:calc(100% - 18px);width:100%;object-fit:contain}.bvDrinkPair span{font-size:10px;font-weight:800;color:#fff;line-height:12px;text-align:center;text-shadow:0 1px 2px #000}.bvIllustrativeLabel{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:3;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.62);color:#fff;font-size:11px;font-weight:700;line-height:1.1;white-space:nowrap;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}#products .productCard:hover .bvDrinkImage img,#products .product:hover .bvDrinkImage img,#manage .productCard:hover .bvDrinkImage img{transform:scale(1.035)}@media(max-width:600px){.bvDrinkImage{height:180px}}';
+  document.head.appendChild(style);
+  const old=window.renderProducts;
+  if(typeof old==='function'){
+    window.renderProducts=async function(){
+      const result=await old.apply(this,arguments);
+      applyDrinkImages();
+      return result;
+    };
+  }
+  const oldManage=window.renderManage;
+  if(typeof oldManage==='function'){
+    window.renderManage=function(){
+      const result=oldManage.apply(this,arguments);
+      applyDrinkImages();
+      return result;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(applyDrinkImages,150));
+  setTimeout(applyDrinkImages,700);
+  window.BV_APPLY_DRINK_IMAGES=applyDrinkImages;
+})();</script></body></html>
