@@ -55,7 +55,27 @@
     password = String(password || '');
     if (!email || !password) return { error: 'Informe e-mail e senha.' };
 
-    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    let { data, error } = await client.auth.signInWithPassword({ email, password });
+
+    // Primeiro acesso do administrador inicial:
+    // se a conta ainda não existir, o próprio login cria a conta via Auth.
+    // A trigger do Supabase atribui automaticamente o perfil "administrador"
+    // somente para este e-mail. A senha nunca fica gravada no código.
+    if (error && email === 'marco@brasa.com' && /invalid login credentials/i.test(String(error.message || ''))) {
+      const created = await client.auth.signUp({
+        email,
+        password,
+        options: { data: { name: 'Marco' } }
+      });
+      if (created.error) return { error: errorText(created.error) };
+      if (!created.data?.user) return { error: 'Não foi possível criar o administrador inicial.' };
+      if (!created.data.session) {
+        return { error: 'Administrador criado. Confirme o e-mail recebido antes do primeiro acesso.' };
+      }
+      data = created.data;
+      error = null;
+    }
+
     if (error) return { error: errorText(error) };
     if (!data?.user) return { error: 'O servidor não retornou o usuário.' };
 
