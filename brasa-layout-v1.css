@@ -189,7 +189,8 @@ body:before{
   #page-inicio .homePromoBanner{margin-bottom:10px;border-radius:15px}
   #page-inicio .homeHero{min-height:420px;padding:25px 20px 210px;border-radius:20px;align-items:flex-start}
   #page-inicio .homeHeroContent{width:100%;text-align:left}
-  #page-inicio .homeHeroContent h2{font-size:50px;letter-spacing:-2.2px}
+  #page-inicio .homeHeroContent h2:after{font-size:50px;letter-spacing:-2.2px}
+  #page-inicio .homeHeroContent h2{font-size:0;letter-spacing:0}
   #page-inicio .homeHeroContent p{font-size:13px}
   #page-inicio .homeHeroFood{right:50%;transform:translateX(50%) rotate(-5deg);bottom:-42px;width:300px;height:240px;font-size:180px}
   #page-inicio .homeScribble{right:17px;bottom:175px;font-size:23px}
@@ -218,7 +219,8 @@ body:before{
 }
 @media(min-width:851px){.bbMobileNav{display:none!important}}
 @media(max-width:430px){
-  #page-inicio .homeHeroContent h2{font-size:43px}
+  #page-inicio .homeHeroContent h2:after{font-size:43px}
+  #page-inicio .homeHeroContent h2{font-size:0}
   #page-inicio .homeHero{min-height:400px;padding-bottom:200px}
   #page-inicio .homeHeroFood{font-size:155px;bottom:-34px}
   #page-inicio .homeFeature{min-height:120px}
