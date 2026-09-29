@@ -1381,6 +1381,19 @@ window.BV_TRACKING_REALTIME=null;
         <option value="administrador" ${x.role==='administrador'?'selected':''}>Administrador</option>
       </select></div>
       <button type="button" class="userDelete" onclick="deleteUser('${esc(x.id)}')">Excluir</button>
+      <div class="bvCreditBox" data-credit-user="${esc(x.id)}" style="grid-column:1/-1;margin-top:10px;padding:13px;border:1px solid rgba(229,9,20,.22);border-radius:14px;background:rgba(229,9,20,.06)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b style="font-size:11px;color:#fff">💳 PAGAMENTO A PRAZO</b><small style="color:#8f96a0">Limite individual</small></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px;border:1px solid rgba(255,255,255,.07);border-radius:9px"><span style="font-size:9px;font-weight:900;color:#8f96a0">PERMITIR A PRAZO</span><input class="bvCreditEnabled" type="checkbox" ${x.credit_enabled?'checked':''} style="width:18px;height:18px"></label>
+          <label style="display:flex;flex-direction:column;gap:5px"><span style="font-size:9px;font-weight:900;color:#8f96a0">LIMITE (R$)</span><input class="bvCreditLimit" type="number" min="0" step="0.01" value="${Number(x.credit_limit||0).toFixed(2)}"></label>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px">
+          <div style="padding:8px;border-radius:9px;background:rgba(0,0,0,.2)"><small style="display:block;font-size:8px;color:#777f89">UTILIZADO</small><b>${money(x.credit_used||0)}</b></div>
+          <div style="padding:8px;border-radius:9px;background:rgba(0,0,0,.2)"><small style="display:block;font-size:8px;color:#777f89">DISPONÍVEL</small><b style="color:#55d98a">${money(Math.max(0,Number(x.credit_limit||0)-Number(x.credit_used||0)))}</b></div>
+          <div style="padding:8px;border-radius:9px;background:rgba(0,0,0,.2)"><small style="display:block;font-size:8px;color:#777f89">STATUS</small><b>${x.credit_enabled?'Ativo':'Desativado'}</b></div>
+        </div>
+        <button type="button" class="bvCreditSave" onclick="saveUserCredit('${esc(x.id)}',this)" style="width:100%;min-height:38px;margin-top:8px;border:0;border-radius:9px;background:linear-gradient(135deg,#ff2530,#b90008);color:#fff;font-weight:900">Salvar configurações</button>
+      </div>
     </div>`).join('')||'<div class="emptyState"><span>👤</span><b>Nenhum usuário encontrado.</b><small>Cadastre um usuário ou altere a busca.</small></div>');
 };
   window.createAdminUser=async()=>{const n=$('newUserName')?.value.trim(),e=$('newUserEmail')?.value.trim(),p=$('newUserPass')?.value||'',role=$('newUserRole')?.value||'usuario';if(!n||!e||p.length<6)return toast('Preencha nome, e-mail e senha com no mínimo 6 caracteres.');const r=await sb.functions.invoke('admin-user',{body:{action:'create',name:n,email:e,password:p,role}});if(r.error||!r.data?.ok)return toast(r.error?.message||r.data?.error||'Não foi possível cadastrar.');await window.renderUsers();toast('Usuário cadastrado.')};
