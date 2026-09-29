@@ -67,7 +67,7 @@ function wrapAddProduct(){
    try{
      const r=await b.from('products').insert({name:n,price,category:cat,description:d,active:true}).select('id').single();if(r.error)throw r.error;
      for(const f of flavors){const z=await b.rpc('set_product_flavor_stock',{p_product_id:r.data.id,p_flavor:f.flavor,p_stock:Math.floor(f.stock)});if(z.error)throw z.error}
-     form.reset();if($('productCategory'))$('productCategory').value='Lanches';window.closeProductForm?.();await window.BV_REFRESH_PRODUCTS?.();await renderCardFlavors();window.toast?.('Produto cadastrado com sucesso.');
+     form.reset();if($('productCategory'))$('productCategory').value='Lanches';window.closeProductForm?.();await window.BV_REFRESH_PRODUCTS?.();await renderCardFlavors();window.toast?.('Sucesso! Seu produto foi cadastrado.');
    }catch(err){console.error('[BV PRODUCT]',err);window.toast?.('Erro ao cadastrar produto: '+(err?.message||'tente novamente.'))}
    finally{if(btn){btn.disabled=false;btn.textContent='✓ Cadastrar produto'}}
  };
