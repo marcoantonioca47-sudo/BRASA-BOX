@@ -73,8 +73,25 @@ function wrapAddProduct(){
  };
  window.BV_CUSTOM_FLAVOR_ADD_PRODUCT=true;
 }
+function patchGenericCartAdd(){
+ if(window.BV_CUSTOM_GENERIC_CART_ADD)return;
+ window.BV_CUSTOM_GENERIC_CART_ADD=true;
+ const old=window.BV_ADD_PRODUCT_TO_CART;
+ window.BV_ADD_PRODUCT_TO_CART=async function(p,flavor=''){
+   const f=String(flavor||'').trim(), key=norm(f);
+   if(generic(p)&&f){
+     const rows=await load(p.id), row=rows.find(x=>norm(x.flavor)===key);
+     if(!row)return window.toast?.('Sabor não encontrado.');
+     const cid=String(p.id)+'::'+key, existing=(window.cart||[]).find(x=>String(x.id)===cid);
+     if((Number(existing?.q)||0)>=Number(row.stock||0))return window.toast?.('Estoque máximo disponível para '+f+'.');
+     if(existing)existing.q++; else (window.cart=window.cart||[]).push({id:cid,productId:p.id,name:String(p.name)+' — '+f,price:Number(p.price)||0,q:1,category:'Bebidas',flavor:f});
+     localStorage.setItem('bv_cart',JSON.stringify(window.cart||[]));window.renderCart?.();if($('count'))$('count').textContent=(window.cart||[]).reduce((s,x)=>s+(Number(x.q)||0),0);window.toast?.('Produto adicionado ao pedido.');return;
+   }
+   return old?.(p,flavor);
+ };
+}
 async function install(){
- installForm();wrapAddProduct();
+ installForm();wrapAddProduct();patchGenericCartAdd();
  const oldAdd=window.addToCart;
  if(!window.BV_CUSTOM_FLAVOR_CART_PATCH&&typeof oldAdd==='function'){
    window.addToCart=async function(id){
@@ -86,7 +103,7 @@ async function install(){
      const close=()=>m.remove();m.querySelector('.bvGenericFlavorClose').onclick=close;
      const box=m.querySelector('.bvGenericFlavorChoices');
      rows.forEach(x=>{const btn=document.createElement('button');btn.type='button';btn.disabled=Number(x.stock)<=0;btn.innerHTML=esc(x.flavor)+' <small>'+Number(x.stock)+' disponíveis</small>';btn.onclick=()=>{const cid=p.id+'::'+norm(x.flavor);const old=window.cart?.find(i=>String(i.id)===cid);if((Number(old?.q)||0)>=Number(x.stock))return window.toast?.('Estoque máximo disponível para '+x.flavor+'.');window.BV_ADD_PRODUCT_TO_CART?.(p,x.flavor);close()};box.appendChild(btn)});
-     m.onclick=e=>{if(e.target===m)close()};document.body.appendChild(document.createElement('span'))?.remove();
+     m.onclick=e=>{if(e.target===m)close()};
    };
    window.BV_CUSTOM_FLAVOR_CART_PATCH=true;
  }
