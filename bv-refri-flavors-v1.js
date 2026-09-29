@@ -17,8 +17,8 @@ const stockOf=(id,fl)=>Math.max(0,Number(window.BV_FLAVOR_STOCKS?.[key(id,fl)]??
 
 async function loadMiniStocks(){
  const b=db(), products=window.products||[];
- const miniProduct=products.find(mini);
- const refri2=products.find(p=>norm(p?.name)==='refri 2l');
+ const miniProduct=products.filter(mini).at(-1);
+ const refri2=products.filter(p=>norm(p?.name)==='refri 2l').at(-1);
  if(!b)return false;
  try{
   const ids=[miniProduct?.id,refri2?.id].filter(Boolean);
@@ -134,8 +134,8 @@ window.change=async(id,d)=>{
 
 function refreshMiniCatalogUI(){
  const products=window.products||[];
- const miniProduct=products.find(mini);
- const refri2=products.find(p=>norm(p?.name)==='refri 2l');
+ const miniProduct=products.filter(mini).at(-1);
+ const refri2=products.filter(p=>norm(p?.name)==='refri 2l').at(-1);
  document.querySelectorAll('#products .productCard').forEach(card=>{
   const name=norm(card.querySelector('h3')?.textContent);
   if(name==='refri mini' && miniProduct){
