@@ -5,7 +5,7 @@
   const KEY = window.BV_SUPABASE_CONFIG?.publishableKey || '';
 
   let client;
-  const validConfig = /^https:\/\/[^\s]+\.supabase\.co\/?$/.test(URL) && /^sb_publishable_[A-Za-z0-9._-]+$/.test(KEY);
+  const validUrl = /^https:\/\/[^\s]+\.supabase\.co\/?$/.test(URL); const validKey = /^sb_publishable_[A-Za-z0-9._-]+$/.test(KEY) || /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(KEY); const validConfig = validUrl && validKey;
   window.BV_DB_READY = false;
   try {
     if (!validConfig) throw new Error('Novo Supabase ainda não configurado.');
