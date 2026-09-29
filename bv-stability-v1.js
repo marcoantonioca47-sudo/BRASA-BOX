@@ -1348,7 +1348,18 @@ window.BV_TRACKING_REALTIME=null;
     for(let attempt=1;attempt<=2;attempt++){
       try{
         const r=await sb.functions.invoke('admin-user',{body:{action:'list'}});
-        if(!r.error&&r.data?.ok)return{users:Array.isArray(r.data.users)?r.data.users:[]};
+        if(!r.error&&r.data?.ok){
+          const users=Array.isArray(r.data.users)?r.data.users:[];
+          const ids=users.map(x=>x.id).filter(Boolean);
+          if(ids.length){
+            const cp=await sb.from('profiles').select('id,credit_enabled,credit_limit,credit_used').in('id',ids);
+            if(!cp.error){
+              const cm=new Map((cp.data||[]).map(x=>[String(x.id),x]));
+              return{users:users.map(x=>({...x,...(cm.get(String(x.id))||{})}))};
+            }
+          }
+          return{users};
+        }
         lastError=r.error?.message||r.data?.error||'Não foi possível carregar usuários.';
       }catch(e){lastError=e?.message||String(e)}
       if(attempt<2)await new Promise(resolve=>setTimeout(resolve,450));
@@ -1356,9 +1367,9 @@ window.BV_TRACKING_REALTIME=null;
     // Fallback: a tabela profiles já possui RLS para administrador e permite
     // manter a lista visível mesmo quando o invoke da Edge Function falhar.
     try{
-      const p=await sb.from('profiles').select('id,name,role,created_at').order('created_at',{ascending:true});
+      const p=await sb.from('profiles').select('id,name,role,created_at,credit_enabled,credit_limit,credit_used').order('created_at',{ascending:true});
       if(!p.error&&Array.isArray(p.data)){
-        return{users:p.data.map(x=>({id:x.id,email:'',name:x.name||'Usuário',role:x.role||'usuario'}))};
+        return{users:p.data.map(x=>({id:x.id,email:'',name:x.name||'Usuário',role:x.role||'usuario',credit_enabled:!!x.credit_enabled,credit_limit:Number(x.credit_limit||0),credit_used:Number(x.credit_used||0)}))};
       }
       if(p.error)lastError=p.error.message||lastError;
     }catch(e){lastError=e?.message||String(e)||lastError}
