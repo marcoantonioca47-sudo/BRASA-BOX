@@ -1490,3 +1490,15 @@ window.BV_TRACKING_REALTIME=null;
   });
   if(sb)sb.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){window.BV_ROLE='';window.BV_USER_NAME='';window.applyAccess();$('login')&&($('login').style.display='flex')}else if(event==='SIGNED_IN'&&session&&firstLoginDone()){setTimeout(()=>window.loadApp(),100)}});
 })();
+
+/* BV_STOCK_BUTTON_DELEGATION */
+(function(){
+ if(window.BV_STOCK_BUTTON_DELEGATION)return; window.BV_STOCK_BUTTON_DELEGATION=true;
+ document.addEventListener('click',function(e){
+  const b=e.target?.closest?.('[data-stock-product],[data-stock-flavor-product]'); if(!b)return;
+  e.preventDefault(); e.stopPropagation();
+  const d=Number(b.dataset.stockDelta||0);
+  if(b.dataset.stockProduct) return window.adjustProductStock?.(b.dataset.stockProduct,d);
+  return window.adjustProductFlavorStock?.(b.dataset.stockFlavorProduct,b.dataset.stockFlavor,d);
+ },true);
+})();
