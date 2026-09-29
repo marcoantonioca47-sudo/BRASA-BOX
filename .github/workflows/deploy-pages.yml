@@ -49,7 +49,7 @@ jobs:
           import re, subprocess, sys
           from pathlib import Path
           html=Path("index.html").read_text(encoding="utf-8")
-          scripts=re.findall(r'<script[^>]+src=["']([^"']+)["'][^>]*>',html,re.I)
+          scripts=re.findall(r"<script[^>]+src=[\"']([^\"']+)[\"'][^>]*>",html,re.I)
           local=[]
           for ref in scripts:
               if ref.startswith(("http://","https://","//")): continue
