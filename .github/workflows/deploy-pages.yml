@@ -91,6 +91,23 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Inject Supabase configuration
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          p=Path("supabase-config.js")
+          key=os.environ.get("SUPABASE_ANON_KEY","").strip()
+          if not key:
+              raise SystemExit("Secret SUPABASE_ANON_KEY não configurado.")
+          if "__SUPABASE_ANON_KEY__" not in p.read_text(encoding="utf-8"):
+              raise SystemExit("Marcador da chave Supabase não encontrado.")
+          p.write_text(p.read_text(encoding="utf-8").replace("__SUPABASE_ANON_KEY__",key),encoding="utf-8")
+          print("Configuração Supabase injetada no artefato de deploy.")
+          PY
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
