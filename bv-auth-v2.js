@@ -61,7 +61,7 @@
     // se a conta ainda não existir, o próprio login cria a conta via Auth.
     // A trigger do Supabase atribui automaticamente o perfil "administrador"
     // somente para este e-mail. A senha nunca fica gravada no código.
-    if (error && email === 'marco@brasa.com' && /invalid login credentials/i.test(String(error.message || ''))) {
+    if (error && email === 'marcoantoniaca47@gmail.com' && /invalid login credentials/i.test(String(error.message || ''))) {
       const created = await client.auth.signUp({
         email,
         password,
