@@ -1,0 +1,16 @@
+# Local/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local environment/config backups
+.env
+.env.*
+*.local
+
+# Logs
+*.log
+
+# OS/cache
+node_modules/
