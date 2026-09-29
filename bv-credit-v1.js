@@ -29,3 +29,19 @@ function hook(){css();const c=$('page-config'),p=$('page-pedido');if(c&&!c.datas
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();setTimeout(hook,400);setTimeout(hook,1200);setTimeout(hook,2500);
 window.addEventListener('bv:role-changed',hook);
 })();
+window.saveUserCredit=async function(id,button){
+  const box=button&&button.closest?button.closest('.bvCreditBox'):document.querySelector('.bvCreditBox[data-credit-user="'+id+'"]');
+  if(!box||!window.sb){return}
+  const enabled=!!box.querySelector('[data-credit-enabled]')?.checked;
+  const limit=Number(box.querySelector('[data-credit-limit]')?.value||0);
+  if(!Number.isFinite(limit)||limit<0){alert('Informe um limite válido.');return}
+  button.disabled=true;
+  try{
+    const {data,error}=await window.sb.rpc('set_customer_credit',{p_user_id:id,p_enabled:enabled,p_limit:limit});
+    if(error) throw error;
+    if(data===false) throw new Error('Não foi possível salvar o crédito.');
+    button.textContent='Salvo ✓';
+    setTimeout(()=>{button.textContent='Salvar configurações';},1200);
+    if(typeof window.BV_ADMIN_USERS==='function') window.BV_ADMIN_USERS();
+  }catch(e){alert(e?.message||'Não foi possível salvar as configurações de crédito.')}finally{button.disabled=false}
+};
