@@ -5,13 +5,18 @@
   const KEY = window.BV_SUPABASE_CONFIG?.publishableKey || '';
 
   let client;
+  const validConfig = /^https:\/\/[^\s]+\.supabase\.co\/?$/.test(URL) && /^sb_publishable_[A-Za-z0-9._-]+$/.test(KEY);
+  window.BV_DB_READY = false;
   try {
+    if (!validConfig) throw new Error('Novo Supabase ainda não configurado.');
     client = window.supabase?.createClient(URL, KEY, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
     window.BV_SUPABASE = client;
+    window.BV_DB_READY = !!client;
   } catch (e) {
-    console.error('[BV AUTH] client error', e);
+    window.BV_SUPABASE = null;
+    console.warn('[BV AUTH] Banco ainda não configurado:', e?.message || e);
   }
 
   const errorText = e => {
@@ -45,7 +50,7 @@
   };
 
   window.BV_LOGIN = async (email, password) => {
-    if (!client) return { error: 'Supabase não carregou. Recarregue a página.' };
+    if (!client) return { error: 'O novo Supabase ainda não foi configurado neste BrasaBox.' };
     email = String(email || '').trim().toLowerCase();
     password = String(password || '');
     if (!email || !password) return { error: 'Informe e-mail e senha.' };
