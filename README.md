@@ -1,79 +1,80 @@
-# 🍔 BRASABOX
+# 🔥 BrasaBox
 
-Sistema web de pedidos para a BRASABOX, desenvolvido com HTML, CSS e JavaScript.
+Sistema web de pedidos da **BrasaBox**, preparado a partir da versão funcional do projeto anterior e separado para um novo ambiente.
 
-## ✨ Recursos
+## O que esta versão mantém
 
 - Cardápio responsivo
 - Carrinho de compras
 - Entrega ou retirada
-- Cálculo de taxa de entrega
-- Pagamento via Pix, dinheiro e cartão
-- Campo para troco
-- Cupons de desconto
-- Finalização do pedido via WhatsApp
+- Taxa de entrega por bairro
+- Pix, dinheiro e cartão
+- Troco
+- Cupons e promoções
+- Acompanhamento de pedidos
 - Área administrativa
 - Gerenciamento de produtos
-- Gerenciamento de pedidos e status
-- Dashboard com indicadores
-- Estrutura inicial de PWA
+- Gerenciamento de pedidos/status
+- Área do motoboy
+- Sincronização e atualização em tempo real
+- Notificações
+- PWA
 
-## 🚀 Publicação no GitHub Pages
+## 🔐 Novo ambiente
 
-1. Crie um repositório público no GitHub, por exemplo `brasabox`.
-2. Envie os arquivos deste projeto para a branch `main`.
-3. Acesse **Settings → Pages**.
-4. Em **Build and deployment**, selecione **GitHub Actions**.
-5. O workflow deste repositório fará o deploy automaticamente.
+Esta versão foi preparada para usar um **novo projeto Supabase**.
 
-O site ficará em:
+A configuração fica em:
 
-`https://SEU-USUARIO.github.io/brasabox/`
+`supabase-config.js`
 
-## 🗂️ Estrutura
+Preencha somente:
 
-```text
-brasabox/
-├── .github/
-│   └── workflows/
-│       └── deploy-pages.yml
-├── assets/
-│   └── icons/
-├── app.js
-├── index.html
-├── manifest.json
-├── style.css
-├── sw.js
-├── .gitignore
-└── README.md
-```
+- URL do novo projeto Supabase
+- Publishable key do novo projeto
 
-## ⚙️ Configuração
+**Não coloque service_role key ou qualquer chave secreta no frontend.**
 
-A versão atual é um protótipo front-end. Dados de produtos, pedidos e configurações são armazenados no `localStorage` do navegador.
+O projeto não deve reutilizar o banco de dados da versão antiga.
 
-Antes de usar em produção, recomenda-se adicionar:
+## 🚀 GitHub Pages
 
-- Backend e banco de dados
-- Autenticação segura
-- API para pedidos em tempo real
-- Gateway de pagamento
-- Integração oficial com WhatsApp
-- Controle de acesso administrativo
-- Variáveis de ambiente para dados sensíveis
+Repositório:
 
-### WhatsApp
-
-O número de WhatsApp utilizado pelo projeto deve ser configurado no painel administrativo ou no arquivo de configuração correspondente. Não publique senhas, tokens ou chaves secretas no repositório.
-
-## 📱 GitHub Pages
-
-O projeto foi preparado para funcionar como site estático no GitHub Pages.
+`marcoantonioca47-sudo/BRASA-BOX`
 
 O deploy é feito pelo workflow:
 
 `.github/workflows/deploy-pages.yml`
 
-## 📄 Licença
+Depois de ativar o GitHub Pages em **Settings → Pages**, selecione **GitHub Actions** como fonte de publicação.
 
-Projeto privado/comercial da BRASABOX. Adapte esta seção caso queira publicar o código com uma licença específica.
+## 🗄️ Banco de dados
+
+Os scripts SQL deste repositório devem ser executados somente no **novo projeto Supabase**, na ordem necessária para a instalação.
+
+Arquivos principais:
+
+- `supabase-schema.sql`
+- `supabase-settings.sql`
+- `supabase-realtime.sql`
+- `supabase-hardening.sql`
+- demais migrações específicas do sistema
+
+Antes de colocar o sistema em produção, revise as políticas RLS e confirme que o administrador e os perfis possuem as permissões esperadas.
+
+## ⚠️ Importante
+
+O repositório contém versões históricas dos scripts que fizeram parte do desenvolvimento do sistema. O carregamento efetivo é definido pelo `index.html`.
+
+Não apague scripts históricos de forma indiscriminada: primeiro confirme quais arquivos são carregados e quais funções dependem deles.
+
+## 📱 Identidade
+
+Nome atual do sistema: **BrasaBox**
+
+Os identificadores internos históricos que começam com `bv_` foram preservados em alguns scripts para evitar quebrar funções existentes. Eles não significam que o sistema esteja conectado ao antigo Supabase.
+
+## Licença
+
+Projeto comercial da BrasaBox.
