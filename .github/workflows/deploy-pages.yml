@@ -91,7 +91,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Inject Supabase configuration
+      - name: Validate Supabase configuration
         env:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
@@ -99,29 +99,21 @@ jobs:
           from pathlib import Path
           import os
           p=Path("supabase-config.js")
-          key=os.environ.get("SUPABASE_ANON_KEY","").strip()
-          if not key:
-              raise SystemExit("Secret SUPABASE_ANON_KEY não configurado.")
-          if "__SUPABASE_ANON_KEY__" not in p.read_text(encoding="utf-8"):
-              raise SystemExit("Marcador da chave Supabase não encontrado.")
-          p.write_text(p.read_text(encoding="utf-8").replace("__SUPABASE_ANON_KEY__",key),encoding="utf-8")
-          print("Configuração Supabase injetada no artefato de deploy.")
-      
-      - name: Persist public Supabase configuration
-        run: |
-          if grep -q "__SUPABASE_ANON_KEY__" supabase-config.js; then
-            echo "Marcador ainda presente; nada será gravado."
-            exit 1
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add supabase-config.js
-          if git diff --cached --quiet; then
-            echo "Configuração pública já está atualizada."
-          else
-            git commit -m "Atualiza configuração pública do Supabase [skip ci]"
-            git push
-          fi
+          text=p.read_text(encoding="utf-8")
+          if "__SUPABASE_ANON_KEY__" in text:
+              key=os.environ.get("SUPABASE_ANON_KEY","").strip()
+              if not key:
+                  raise SystemExit("Secret SUPABASE_ANON_KEY não configurado.")
+              text=text.replace("__SUPABASE_ANON_KEY__",key)
+              p.write_text(text,encoding="utf-8")
+              print("Configuração Supabase injetada.")
+          else:
+              print("Configuração Supabase já está publicada no repositório.")
+          text=p.read_text(encoding="utf-8")
+          if "https://abfxvqrrsqrmykrdoqrp.supabase.co" not in text:
+              raise SystemExit("URL do novo Supabase não encontrada.")
+          if "__SUPABASE_ANON_KEY__" in text:
+              raise SystemExit("Marcador da chave Supabase ainda presente.")
           PY
 
       - name: Upload artifact
