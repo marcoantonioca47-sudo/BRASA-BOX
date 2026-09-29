@@ -25,3 +25,48 @@ body.modalOpen{overflow:auto}.productFormPanel{display:none;position:relative;in
 @media(max-width:850px){html,body{width:100%;min-width:0;overflow-x:hidden}.sidebar{transform:translateX(-105%);width:min(86vw,310px);box-shadow:10px 0 35px #000b;transition:transform .25s}.sidebar.open{transform:translateX(0)}.app{margin-left:0!important;width:100%!important;min-width:0}.topbar{height:62px;padding:0 10px;gap:10px}.menuBtn{display:grid!important;place-items:center;width:42px;height:42px;padding:0;font-size:20px}.topbar h1{font-size:18px}.pageKicker{font-size:9px}.topActions{gap:6px}.adminState{display:none}.cartTop{padding:9px 11px}.content{width:100%;max-width:none;padding:12px 10px 85px}.hero{min-height:235px;padding:24px 18px;border-radius:16px}.hero h2{font-size:32px;line-height:1.05;margin:7px 0}.hero p{font-size:13px;line-height:1.5;margin:10px 0 16px}.hero button{width:100%;padding:13px}.quickGrid{grid-template-columns:1fr;gap:9px;margin-top:10px}.quickCard{padding:15px;border-radius:13px;display:grid;grid-template-columns:38px 1fr;column-gap:10px;align-items:center}.quickCard span{grid-row:1/3;margin:0;font-size:24px}.quickCard b{font-size:14px}.quickCard small{margin-top:2px}.sectionTitle{margin-bottom:12px}.sectionTitle h2,.adminTop h2{font-size:25px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.product{padding:8px;border-radius:11px;min-width:0}.photo{height:92px;font-size:42px}.product h3{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.product p{font-size:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:29px}.price{font-size:15px}.add{font-size:12px;padding:9px 6px}.checkout,.adminCards,.trackingGrid{grid-template-columns:1fr;gap:10px}.panel{padding:12px;border-radius:12px}.two{gap:6px}.two>*{min-width:0}.tabs,.pay{gap:5px}.tabs button,.pay button{padding:10px 6px;font-size:12px}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.stats div{padding:13px;border-radius:11px}.stats b{font-size:20px}.adminTop{align-items:flex-start;gap:10px}.adminTop>button{white-space:nowrap}.shortcutGrid{grid-template-columns:1fr 1fr}.couponGrid{grid-template-columns:1fr}.couponCard{padding:18px}.trackingResult{min-height:180px}.timeline{grid-template-columns:repeat(3,1fr);gap:9px}.step{font-size:10px}.productFormPanel{padding:8px}.productFormModal{width:100%;max-height:94dvh;border-radius:16px}.productFormHero,.userFormTitle{padding:18px}.productForm{padding:16px}.productFormActions{display:grid;grid-template-columns:1fr 1.5fr}.manageProduct{align-items:flex-start;padding:11px}.manageProductInfo{gap:9px}.manageEmoji{width:42px;height:42px;font-size:23px}.manageProduct h3{font-size:14px}.manageProduct p{font-size:11px}.deleteProduct{padding:8px;font-size:11px}.permissionsPanel .managerHeader{padding:18px}.userFormBox .newUserGrid{grid-template-columns:1fr;padding:16px}.userFormBox .newUserGrid button{grid-column:auto;width:100%}.userPerm{padding:14px;align-items:flex-start;flex-direction:column}.userPerm select{width:100%}.settingsPanel{max-width:none}.settingsPanel .two{display:grid;grid-template-columns:1fr}.settingsPanel .two>*{width:100%}.sideBottom{padding-bottom:18px}.closeSide{display:block}.cancelModal,.cancelOrderModal,.confirmCancelModal,.orderCancelModal,#cancelModal{padding:12px!important}.cancelModal>div,.cancelOrderModal>div,.confirmCancelModal>div,.orderCancelModal>div,#cancelModal>div{width:100%!important;border-radius:17px!important}.cancelModal .modalHeader,.cancelOrderModal .modalHeader,.confirmCancelModal .modalHeader,.orderCancelModal .modalHeader,#cancelModal .modalHeader{padding:17px!important}.cancelModal .modalBody,.cancelOrderModal .modalBody,.confirmCancelModal .modalBody,.orderCancelModal .modalBody,#cancelModal .modalBody{padding:16px 17px!important}.cancelModal .modalActions,.cancelOrderModal .modalActions,.confirmCancelModal .modalActions,.orderCancelModal .modalActions,#cancelModal .modalActions{padding:0 17px 17px!important}}
 @media(max-width:520px){.content{padding-left:8px;padding-right:8px}.grid{gap:7px}.photo{height:84px}.hero h2{font-size:29px}.topbar{padding:0 8px}.topbar h1{font-size:17px}.login{padding:24px 18px}.login h1{font-size:28px}.overlay{padding:12px}.formSave,.formCancel{padding:11px 10px}.sectionTitle .pill{font-size:10px;padding:6px 8px}}
 @media(min-width:851px) and (max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.content{padding-left:22px;padding-right:22px}}
+
+/* BRASABOX — correção do cadastro de produto no mobile */
+@media (max-width:600px){
+  #page-produtos #productFormPanel.show,
+  #page-produtos #productFormPanel.open{
+    position:fixed!important;
+    inset:0!important;
+    z-index:99999!important;
+    display:flex!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    width:100%!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    margin:0!important;
+    padding:10px!important;
+    box-sizing:border-box!important;
+    background:rgba(0,0,0,.78)!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  #page-produtos #productFormPanel.show .productFormModal,
+  #page-produtos #productFormPanel.open .productFormModal{
+    position:relative!important;
+    width:100%!important;
+    max-width:560px!important;
+    max-height:calc(100dvh - 20px)!important;
+    margin:0 auto!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    border-radius:16px!important;
+  }
+  #page-produtos #productFormPanel.show .productFormHero,
+  #page-produtos #productFormPanel.open .productFormHero{
+    position:sticky!important;
+    top:0!important;
+    z-index:5!important;
+  }
+  #page-produtos #productFormPanel.show .productForm,
+  #page-produtos #productFormPanel.open .productForm{
+    padding-bottom:24px!important;
+  }
+}
